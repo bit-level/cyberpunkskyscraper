@@ -21,9 +21,10 @@ public class Skyscraper : MonoBehaviour
 	private Vector3 moveDirection = Vector3.forward;
 	private float timeOffset;
 
-	private int height = 0;
+	public int FloorsCount { get; private set; } = 0;
 
 	public static Skyscraper Instance { get; private set; }
+	public static readonly float FloorHeight = 3f;
 
 	void Awake()
 	{
@@ -67,7 +68,7 @@ public class Skyscraper : MonoBehaviour
 				currentState = State.Built;
 				return;
 			}
-			else height++;
+			else FloorsCount++;
 			previousFloor = shank;
 			moveDirection = (moveDirection == Vector3.right) ? Vector3.forward : Vector3.right;
 			CreateNewFloor();
@@ -84,7 +85,7 @@ public class Skyscraper : MonoBehaviour
 	{
 		timeOffset = UnityEngine.Random.Range(0f, 10f);
 		currentFloor = Instantiate(floorPrefab, transform);
-		currentFloor.name = string.Format("Floor_{0}", height + 1);
+		currentFloor.name = string.Format("Floor_{0}", FloorsCount + 1);
 		currentFloor.localScale = previousFloor.localScale;
 		currentFloorPosition =
 			Vector3.Scale(previousFloor.localPosition, Vector3.one - moveDirection)
@@ -125,7 +126,7 @@ public class Skyscraper : MonoBehaviour
 		if (isShankExists)
 		{
 			shank = Instantiate(floorPrefab, shanksWrap);
-			shank.name = "Shank_" + (height + 1);
+			shank.name = "Shank_" + (FloorsCount + 1);
 			shank.localScale = shankScale;
 			shank.localPosition = shankPosition;
 		}
@@ -134,7 +135,7 @@ public class Skyscraper : MonoBehaviour
 		if (isTrashExists)
 		{
 			trash = Instantiate(floorPrefab, trashWrap);
-			trash.name = "Trash_" + (height + 1);
+			trash.name = "Trash_" + (FloorsCount + 1);
 			trash.localScale = trashScale;
 			trash.localPosition = trashPosition;
 		}
