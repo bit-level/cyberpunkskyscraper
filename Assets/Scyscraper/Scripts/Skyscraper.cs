@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Skyscraper : MonoBehaviour
 {
@@ -12,7 +13,6 @@ public class Skyscraper : MonoBehaviour
 
 	public enum State { ReadyToBuild, UnderBuild, Built }
 
-	public State currentState;
 	private Dictionary<State, Action> statesActions;
 
 	private Transform currentFloor;
@@ -23,6 +23,7 @@ public class Skyscraper : MonoBehaviour
 	private Vector3 spawnPosition;
 
 	public int FloorsCount { get; private set; } = 0;
+	public State CurrentState { get; private set; }
 
 	public static Skyscraper Instance { get; private set; }
 	public static readonly float FloorHeight = 1.5f;
@@ -31,7 +32,7 @@ public class Skyscraper : MonoBehaviour
 	{
 		Instance = this;
 
-		currentState = State.ReadyToBuild;
+		CurrentState = State.ReadyToBuild;
 		statesActions = new Dictionary<State, Action>()
 		{
 			{ State.ReadyToBuild, ReadyToBuildAction },
@@ -44,32 +45,33 @@ public class Skyscraper : MonoBehaviour
 
 	void Update()
 	{
-		statesActions[currentState].Invoke();
+		statesActions[CurrentState].Invoke();
 	}
 
 
 	private void ReadyToBuildAction()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
 		{
-			currentState = State.UnderBuild;
+			CurrentState = State.UnderBuild;
 			CreateNewFloor();
 		}
 	}
 
 	private void UnderBuildAction()
 	{
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
 		{
 			Transform shank;
 			PutCurrentFloor(out shank);
 			if (shank == null)
 			{
-				print("Game Over");
-				currentState = State.Built;
+				CurrentState = State.Built;
+				FMODUnity.RuntimeManager.PlayOneShot("event:/Fail");
 				return;
 			}
-			else FloorsCount++;
+			FMODUnity.RuntimeManager.PlayOneShot("event:/Floor");
+			FloorsCount++;
 			previousFloor = shank;
 			moveDirection = (moveDirection == Vector3.right) ? Vector3.forward : Vector3.right;
 			time = 0f;
@@ -81,6 +83,11 @@ public class Skyscraper : MonoBehaviour
 
 	private void BuiltAction()
 	{
+		if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
+        {
+			ClearData();
+			CurrentState = State.ReadyToBuild;
+        }
 	}
 
 
@@ -185,5 +192,23 @@ public class Skyscraper : MonoBehaviour
 	private void CalculateTrashPosition(out Vector3 trashPosition)
     {
 		trashPosition = currentFloor.localPosition;
+    }
+
+	private void ClearData()
+	{
+		DestroyAllChilds(shanksWrap);
+		DestroyAllChilds(trashWrap);
+		FloorsCount = 0;
+		previousFloor = firstFloor;
+		time = 0f;
+    }
+
+	private void DestroyAllChilds(Transform parent)
+    {
+		List<GameObject> childs = new List<GameObject>();
+		for (int i = 0; i < parent.childCount; ++i)
+			childs.Add(parent.GetChild(i).gameObject);
+		foreach (GameObject child in childs)
+			Destroy(child);
     }
 }
