@@ -109,7 +109,10 @@ public class Skyscraper : MonoBehaviour
 		Transform trash;
 		DivideCurrentFloor(out shank, out trash);
 		if (trash != null)
-			trash.gameObject.AddComponent<Rigidbody>().mass = 5f;
+        {
+			var rb = trash.gameObject.AddComponent<Rigidbody>();
+			rb.mass = trash.localScale.x * trash.localScale.y * trash.localScale.z;
+        }
 	}
 
 	private void DivideCurrentFloor(out Transform shank, out Transform trash)
@@ -117,11 +120,16 @@ public class Skyscraper : MonoBehaviour
 		Vector3 shankScale, trashScale;
 		CalculateShankAndTrashScales(out shankScale, out trashScale);
 
-		Vector3 shankPosition, trashPosition;
-		CalculateShankAndTrashPositions(out shankPosition, out trashPosition);
-
 		bool isShankExists = Vector3.Scale(shankScale, moveDirection).magnitude > 0f;
 		bool isTrashExists = Vector3.Scale(trashScale, moveDirection).magnitude > 0f;
+
+		Vector3 shankPosition = Vector3.zero;
+		Vector3 trashPosition = Vector3.zero;
+
+		if (isShankExists)
+			CalculateShankAndTrashPositions(out shankPosition, out trashPosition);
+		else
+			CalculateTrashPosition(out trashPosition);
 
 		if (isShankExists)
 		{
@@ -172,5 +180,10 @@ public class Skyscraper : MonoBehaviour
 		shankPosition.y = currentFloor.localPosition.y;
 
 		trashPosition = shankPosition + shift.normalized * currentFloorScale / 2f;
+    }
+
+	private void CalculateTrashPosition(out Vector3 trashPosition)
+    {
+		trashPosition = currentFloor.localPosition;
     }
 }
