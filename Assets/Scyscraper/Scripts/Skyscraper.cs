@@ -19,12 +19,13 @@ public class Skyscraper : MonoBehaviour
 	private Transform previousFloor;
 	private Vector3 currentFloorPosition;
 	private Vector3 moveDirection = Vector3.forward;
-	private float timeOffset;
+	private float time;
+	private Vector3 spawnPosition;
 
 	public int FloorsCount { get; private set; } = 0;
 
 	public static Skyscraper Instance { get; private set; }
-	public static readonly float FloorHeight = 3f;
+	public static readonly float FloorHeight = 1.5f;
 
 	void Awake()
 	{
@@ -71,9 +72,11 @@ public class Skyscraper : MonoBehaviour
 			else FloorsCount++;
 			previousFloor = shank;
 			moveDirection = (moveDirection == Vector3.right) ? Vector3.forward : Vector3.right;
+			time = 0f;
 			CreateNewFloor();
 		}
-		UpdateCurrentFloorPosition();
+        UpdateCurrentFloorPosition();
+        time += Time.deltaTime;
 	}
 
 	private void BuiltAction()
@@ -83,24 +86,21 @@ public class Skyscraper : MonoBehaviour
 
 	private void CreateNewFloor()
 	{
-		timeOffset = UnityEngine.Random.Range(0f, 10f);
 		currentFloor = Instantiate(floorPrefab, transform);
 		currentFloor.name = string.Format("Floor_{0}", FloorsCount + 1);
 		currentFloor.localScale = previousFloor.localScale;
-		currentFloorPosition =
-			Vector3.Scale(previousFloor.localPosition, Vector3.one - moveDirection)
-			+ moveDirection * floorPrefab.localScale.x * Mathf.Sin((Time.time + timeOffset) * floorMoovingSpeed);
+		currentFloorPosition = Vector3.Scale(previousFloor.localPosition, Vector3.one - moveDirection) + moveDirection * floorPrefab.localScale.x;
 		currentFloorPosition.y += floorPrefab.localScale.y;
-
+		spawnPosition = currentFloorPosition;
 		currentFloor.localPosition = currentFloorPosition;
 	}
 
 	private void UpdateCurrentFloorPosition()
 	{
 		if (currentFloor == null) return;
-		float newCoordinate = Mathf.Sin((Time.time + timeOffset) * floorMoovingSpeed);
-		currentFloorPosition.Scale(Vector3.one - moveDirection);
-		currentFloorPosition += Vector3.Scale(floorPrefab.localScale, moveDirection) * newCoordinate;
+
+		currentFloorPosition = spawnPosition - moveDirection * Mathf.PingPong(time * floorMoovingSpeed, floorPrefab.localScale.x * 2f);
+
 		currentFloor.localPosition = currentFloorPosition;
 	}
 
