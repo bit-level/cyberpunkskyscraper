@@ -25,13 +25,21 @@ public class BestScore : MyText
     private void Update()
     {
         if (Skyscraper.Instance.CurrentState == Skyscraper.State.Built && value < Score.Instance.Value)
-            UpdateValue();
+            NewBestScore();
     }
 
-    private void UpdateValue()
+    private void NewBestScore()
     {
         value = Score.Instance.Value;
         PlayerPrefs.SetInt(PREFSKEY, value);
         label.text = string.Format("Best Score: {0}", value.ToString());
+
+#if !UNITY_EDITOR
+        AppMetrica.Instance.ReportEvent("new_best_score", new System.Collections.Generic.Dictionary<string, object>()
+        {
+            { "total_play_time", Mathf.RoundToInt(GameManager.Instance.TotalPlayTime)}
+        });
+        AppMetrica.Instance.SendEventsBuffer();
+#endif
     }
-}
+} 
