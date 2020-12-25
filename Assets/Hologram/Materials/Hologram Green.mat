@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hologram Green
+  m_Shader: {fileID: -6465566751694194690, guid: 13f6b6158b0ed2245a02f8e10f030f4e, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _HologramScanlines:
+        m_Texture: {fileID: 2800000, guid: a092dae5dcb0cf748b06b17d79d6ebc4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HologramTexture:
+        m_Texture: {fileID: 2800000, guid: 7fe1fa9865640a643918286576a97731, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ScrollSpeed: 0.05
+    m_Colors:
+    - Vector3_CF229695: {r: 0.16, g: 1, b: 0.52, a: 0}
+    - _BaseColor: {r: 1.4745098, g: 0.22745098, b: 1.4980392, a: 0}
+    - _FresnelColor: {r: 3.2111173, g: 1.9333951, b: 1.2272857, a: 1}
+    - _HologramTextureTiling: {r: 1, g: 3, b: 0, a: 0}
+    - _HologramTiling: {r: 8, g: 8, b: 0, a: 0}
+    - _MainColor: {r: 1.498039, g: 1.498039, b: 1.498039, a: 1}
+  m_BuildTextureStacks: []
