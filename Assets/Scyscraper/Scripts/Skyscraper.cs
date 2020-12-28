@@ -5,10 +5,10 @@ using System.Linq;
 
 public class Skyscraper : MonoBehaviour
 {
-    #region Fields
+	#region Fields
 
 #pragma warning disable 0649
-    [SerializeField] Transform floorPrefab;
+	[SerializeField] Transform floorPrefab;
 	[SerializeField] Transform firstFloor;
 	[SerializeField] float floorMoovingSpeed = 1f;
 	[SerializeField] Transform shanksWrap;
@@ -29,19 +29,19 @@ public class Skyscraper : MonoBehaviour
 	private Vector3 spawnPosition;
 	private float time;
 
-	public readonly float FloorHeight = 1f;
-    #endregion
+	public readonly float FloorHeight = 0.5f;
+	#endregion
 
-    #region Properties
+	#region Properties
 
-    public int FloorsCount { get; private set; } = 0;
+	public int FloorsCount { get; private set; } = 0;
 	public State CurrentState { get; private set; }
 	public static Skyscraper Instance { get; private set; }
-    #endregion
+	#endregion
 
-    #region MonoBehaviour Callbacks
+	#region MonoBehaviour Callbacks
 
-    void Awake()
+	void Awake()
 	{
 		Instance = this;
 
@@ -50,7 +50,7 @@ public class Skyscraper : MonoBehaviour
 		{
 			{ State.ReadyToBuild, ReadyToBuildAction },
 			{ State.UnderBuild,   UnderBuildAction },
-			{ State.Built, 		  BuiltAction }
+			{ State.Built,        BuiltAction }
 		};
 
 		previousFloor = firstFloor;
@@ -60,52 +60,70 @@ public class Skyscraper : MonoBehaviour
 	{
 		statesActions[CurrentState].Invoke();
 	}
-    #endregion
+	#endregion
 
 
-    #region Functions
+	#region Functions
 
-    private void ReadyToBuildAction()
+	private void ReadyToBuildAction()
 	{
-        if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
-        {
-            CurrentState = State.UnderBuild;
-            CreateNewFloor();
-        }
-    }
+		if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
+		{
+			CurrentState = State.UnderBuild;
+			CreateNewFloor();
+		}
+	}
 
 	private void UnderBuildAction()
 	{
 		if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
 		{
-			Transform shank;
-			PutCurrentFloor(out shank);
-			if (shank == null)
-			{
-				CurrentState = State.Built;
-				gameOver.Play();
-				return;
-			}
-			tap.Play();
-			FloorsCount++;
-			previousFloor = shank;
-			moveDirection = (moveDirection == Vector3.right) ? Vector3.forward : Vector3.right;
-			time = 0f;
-			CreateNewFloor();
+			ProcessTap();
 		}
-        UpdateCurrentFloorPosition();
-        time += Time.deltaTime;
+#if UNITY_EDITOR
+		else if (Input.GetMouseButtonDown(1))
+		{
+			// Cheat tap
+
+			Vector3 correctPosition = previousFloor.localPosition;
+			correctPosition.y = currentFloor.localPosition.y;
+
+			currentFloor.localPosition = correctPosition;
+
+			ProcessTap();
+		}
+#endif
+		UpdateCurrentFloorPosition();
+		time += Time.deltaTime;
 	}
 
 	private void BuiltAction()
 	{
 		if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
-        {
+		{
 			ClearData();
 			CurrentState = State.ReadyToBuild;
-        }
+		}
 	}
 
+
+	private void ProcessTap()
+    {
+		Transform shank;
+		PutCurrentFloor(out shank);
+		if (shank == null)
+        {
+			CurrentState = State.Built;
+			gameOver.Play();
+			return;
+        }
+		tap.Play();
+		FloorsCount++;
+		previousFloor = shank;
+		moveDirection = (moveDirection == Vector3.right) ? Vector3.forward : Vector3.right;
+		time = 0f;
+		CreateNewFloor();
+    }
 
 	private void CreateNewFloor()
 	{
