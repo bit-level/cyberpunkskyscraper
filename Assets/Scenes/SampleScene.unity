@@ -760,7 +760,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1b8d4e46973c2204ab68cb85e8122e94, type: 2}
+  - {fileID: 2100000, guid: 1a02fd37d81e88241bee6a21e3ff2726, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4544,7 +4544,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -5399,7 +5399,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.1.7
+  m_Text: 0.1.8
 --- !u!222 &2069872155
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5885,7 +5885,7 @@ PrefabInstance:
     - target: {fileID: 9031413706349319617, guid: f9fbbb6db9b4ec04aa416d9617f3e81f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1b8d4e46973c2204ab68cb85e8122e94, type: 2}
+      objectReference: {fileID: 2100000, guid: 1a02fd37d81e88241bee6a21e3ff2726, type: 2}
     - target: {fileID: 9048007324412198435, guid: f9fbbb6db9b4ec04aa416d9617f3e81f, type: 3}
       propertyPath: m_LightProbeUsage
       value: 0
@@ -5897,7 +5897,7 @@ PrefabInstance:
     - target: {fileID: 9048007324412198435, guid: f9fbbb6db9b4ec04aa416d9617f3e81f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f588925238d3804449a3c7f46cba6c67, type: 2}
+      objectReference: {fileID: 2100000, guid: 060d4b02511a1714f895fb8c318400dc, type: 2}
     - target: {fileID: 9221704282272394142, guid: f9fbbb6db9b4ec04aa416d9617f3e81f, type: 3}
       propertyPath: m_Name
       value: House_1
