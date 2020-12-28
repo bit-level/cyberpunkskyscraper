@@ -3,22 +3,36 @@ using UnityEngine.UI;
 
 public class FpsCounter : MyText
 {
-    private Text label;
-    private float refreshTime = 1f;
-    private float timer;
+    private Text _label;
+    private float _refreshTime = 1f;
+    private float _timer;
+    private float _totalFramesCount;
 
     private void Awake()
     {
-        label = GetComponent<Text>();
+        _label = GetComponent<Text>();
     }
 
     private void Update()
     {
-        if (Time.unscaledTime > timer)
+        if (Time.unscaledTime > _timer)
         {
             int fps = (int)(1f / Time.unscaledDeltaTime);
-            label.text = "FPS: " + fps;
-            timer = Time.unscaledTime + refreshTime;
+            _label.text = "FPS: " + fps;
+            _timer = Time.unscaledTime + _refreshTime;
+            _totalFramesCount += fps;
         }
     }
+
+#if !UNITY_EDITOR
+    private void OnApplicationQuit()
+    {
+        float averageFps = (float)_totalFramesCount / _timer;
+        AppMetrica.Instance.ReportEvent("Application Quit", new System.Collections.Generic.Dictionary<string, object>()
+        {
+            { "Average FPS", averageFps }
+        });
+        AppMetrica.Instance.SendEventsBuffer();
+    }
+#endif
 }

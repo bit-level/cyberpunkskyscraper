@@ -28,5 +28,5 @@ Material:
     - _ScrollSpeed: 0.025
     m_Colors:
     - _Color: {r: 1, g: 0.4575472, b: 0.94304425, a: 1}
-    - _LightDir: {r: -0.45, g: 1, b: -0.45, a: 0}
+    - _LightDir: {r: -0.25, g: 1, b: -0.45, a: 0}
   m_BuildTextureStacks: []
