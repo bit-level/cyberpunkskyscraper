@@ -1,40 +1,47 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CyberpunkSkyscraper.Concept_0
 {
-    public enum Color { PINK, BLUE }
-
-    [ExecuteInEditMode]
     public class House : MonoBehaviour
     {
 #pragma warning disable 0649
-        [SerializeField] Material pink, blue;
-        [SerializeField] MeshRenderer windows, neon;
+        [SerializeField] Material[] materials;
+        [SerializeField] MeshRenderer[] elements;
+        [SerializeField] Material checkedMaterial;
+        [SerializeField] float checkShift = 0f;
 #pragma warning restore 0649
 
-        private Dictionary<Color, Material> _materials;
+        private bool _checked = false;
 
-        private void Awake()
+        public bool checkVisibility = false;
+
+        private void Update()
         {
-            _materials = new Dictionary<Color, Material>()
+            if (checkVisibility && !_checked && IsObjectVisible())
             {
-                { Color.PINK, pink },
-                { Color.BLUE, blue }
-            };
+                foreach (MeshRenderer el in elements)
+                    el.material = checkedMaterial;
+                _checked = true;
+                print(name);
+            }
         }
 
-        #region Functions
-
-        public void SetWindowsColor(Color color)
+        private bool IsObjectVisible()
         {
-            windows.material = _materials[color];
+            Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+            screenPosition.x -= Screen.width / 2f;
+            screenPosition.y -= Screen.height / 2f;
+
+            bool xCorrect = Mathf.Abs(screenPosition.x) - checkShift < Screen.width / 2f;
+            bool yCorrect = Mathf.Abs(screenPosition.y) - checkShift < Screen.height / 2f;
+
+            return xCorrect && yCorrect;
         }
 
-        public void SetNeonColor(Color color)
+        public void SetRandomColors()
         {
-            neon.material = _materials[color];
+            foreach (MeshRenderer el in elements)
+                el.material = materials[Random.Range(0, materials.Length)];
         }
-        #endregion
     }
 }

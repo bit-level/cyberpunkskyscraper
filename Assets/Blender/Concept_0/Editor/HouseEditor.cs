@@ -14,8 +14,7 @@ namespace CyberpunkSkyscraper.Concept_0
 
             if (GUILayout.Button("Randomize Colors"))
             {
-                manager.SetWindowsColor((Color)Random.Range(0, 2));
-                manager.SetNeonColor((Color)Random.Range(0, 2));
+                manager.SetRandomColors();
             }
         }
     }
