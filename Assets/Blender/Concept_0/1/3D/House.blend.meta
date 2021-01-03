@@ -58,7 +58,7 @@ ModelImporter:
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15
-    secondaryUVHardAngle: 88
+    secondaryUVHardAngle: 180
     secondaryUVMarginMethod: 1
     secondaryUVMinLightmapResolution: 4
     secondaryUVMinObjectScale: 1
