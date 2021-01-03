@@ -27,4 +27,16 @@ public class CombineMeshes : MonoBehaviour
         transform.GetComponent<MeshFilter>().sharedMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         transform.GetComponent<MeshFilter>().sharedMesh.CombineMeshes(combine);
     }
+
+    public void ActivateAllObjects()
+    {
+        for (int i = 0; i < transform.childCount; ++i)
+        {
+            Transform child = transform.GetChild(i);
+            for (int j = 0; j < child.childCount; ++j)
+            {
+                child.GetChild(j).gameObject.SetActive(true);
+            }
+        }
+    }
 }

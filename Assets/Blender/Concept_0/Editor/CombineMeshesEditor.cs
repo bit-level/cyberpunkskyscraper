@@ -11,5 +11,6 @@ public class CombineMeshesEditor : Editor
         CombineMeshes manager = (CombineMeshes)target;
 
         if (GUILayout.Button("Combine")) manager.Combine();
+        if (GUILayout.Button("Activate All")) manager.ActivateAllObjects();
     }
 }
