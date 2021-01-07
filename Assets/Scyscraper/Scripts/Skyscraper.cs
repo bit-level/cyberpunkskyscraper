@@ -28,6 +28,7 @@ public class Skyscraper : MonoBehaviour
 	private Vector3 moveDirection = Vector3.forward;
 	private Vector3 spawnPosition;
 	private float time;
+	private bool cheat;
 
 	public readonly float FloorHeight = 0.5f;
 	#endregion
@@ -36,6 +37,7 @@ public class Skyscraper : MonoBehaviour
 
 	public int FloorsCount { get; private set; } = 0;
 	public State CurrentState { get; private set; }
+	public bool Cheat => cheat;
 	public static Skyscraper Instance { get; private set; }
 	#endregion
 
@@ -76,12 +78,12 @@ public class Skyscraper : MonoBehaviour
 
 	private void UnderBuildAction()
 	{
-		if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
+		if (!cheat && (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began)))
 		{
 			ProcessTap();
 		}
 #if UNITY_EDITOR
-		else if (Input.GetMouseButtonDown(1))
+		else if (Input.GetMouseButton(1))
 		{
 			// Cheat tap
 
@@ -93,6 +95,16 @@ public class Skyscraper : MonoBehaviour
 			ProcessTap();
 		}
 #endif
+		else if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
+        {
+			Vector3 correctPosition = previousFloor.localPosition;
+			correctPosition.y = currentFloor.localPosition.y;
+
+			currentFloor.localPosition = correctPosition;
+
+			ProcessTap();
+        }
+
 		UpdateCurrentFloorPosition();
 		time += Time.deltaTime;
 	}
@@ -256,6 +268,13 @@ public class Skyscraper : MonoBehaviour
 			childs.Add(parent.GetChild(i).gameObject);
 		foreach (GameObject child in childs)
 			Destroy(child);
+    }
+
+	public void SwitchCheatState(UnityEngine.UI.Graphic graphic)
+    {
+		cheat = !cheat;
+		if (graphic != null)
+			graphic.color = (cheat) ? Color.green : Color.red;
     }
     #endregion
 }
