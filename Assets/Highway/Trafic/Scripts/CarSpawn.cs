@@ -5,7 +5,7 @@ namespace CyberpunkSkyscraper.Highway
     public class CarSpawn : MonoBehaviour
     {
 #pragma warning disable 0649
-        [SerializeField] private Car prefab;
+        [SerializeField] private Car[] prefabs;
         [SerializeField] private float spawnDelayMin, spawnDelayMax;
 #pragma warning restore 0649
 
@@ -29,7 +29,7 @@ namespace CyberpunkSkyscraper.Highway
 
         public void Spawn()
         {
-            Car car = Instantiate(prefab, transform.position, transform.rotation, transform);
+            Car car = Instantiate(prefabs[Random.Range(0, prefabs.Length)], transform.position, transform.rotation, transform);
         }
     }
 }
