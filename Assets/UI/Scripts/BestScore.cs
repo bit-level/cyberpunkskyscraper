@@ -7,8 +7,11 @@ public class BestScore : MyText
     private const string PREFSKEY = "best_score";
     private int value;
 
+    #region MonoBehaviour Callbacks
+
     private void Awake()
     {
+        // Initialization
         label = GetComponent<Text>();
         if (PlayerPrefs.HasKey(PREFSKEY))
         {
@@ -20,6 +23,8 @@ public class BestScore : MyText
             value = 0;
             label.text = "Best Score: 0";
         }
+
+        UpdateLevelSystem();
     }
 
     private void Update()
@@ -27,6 +32,7 @@ public class BestScore : MyText
         if (Skyscraper.Instance.CurrentState == Skyscraper.State.Built && value < Score.Instance.Value)
             NewBestScore();
     }
+    #endregion
 
     private void NewBestScore()
     {
@@ -34,8 +40,10 @@ public class BestScore : MyText
         PlayerPrefs.SetInt(PREFSKEY, value);
         label.text = string.Format("Best Score: {0}", value.ToString());
 
+        UpdateLevelSystem();
+
 #if !UNITY_EDITOR
-        if (!Skyscraper.Instance.Cheat)
+        if (!Skyscraper.Instance.HasCheatActiveOnce)
         {
             AppMetrica.Instance.ReportEvent("new_best_score", new System.Collections.Generic.Dictionary<string, object>()
             {
@@ -44,5 +52,11 @@ public class BestScore : MyText
             AppMetrica.Instance.SendEventsBuffer();
         }
 #endif
+    }
+
+    private void UpdateLevelSystem()
+    {
+        float newValue = (float)value / Globals.MAXIMUM_SCORE;
+        LevelSystem.Instance.Progress = newValue;
     }
 }

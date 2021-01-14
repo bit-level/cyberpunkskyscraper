@@ -29,6 +29,7 @@ public class Skyscraper : MonoBehaviour
 	private Vector3 spawnPosition;
 	private float time;
 	private bool cheat;
+	private bool hasCheatActiveOnce;
 
 	public readonly float FloorHeight = 0.5f;
 	#endregion
@@ -38,6 +39,7 @@ public class Skyscraper : MonoBehaviour
 	public int FloorsCount { get; private set; } = 0;
 	public State CurrentState { get; private set; }
 	public bool Cheat => cheat;
+	public bool HasCheatActiveOnce => hasCheatActiveOnce;
 	public static Skyscraper Instance { get; private set; }
 	#endregion
 
@@ -61,6 +63,7 @@ public class Skyscraper : MonoBehaviour
 	void Update()
 	{
 		statesActions[CurrentState].Invoke();
+		if (cheat) hasCheatActiveOnce = true;
 	}
 	#endregion
 
