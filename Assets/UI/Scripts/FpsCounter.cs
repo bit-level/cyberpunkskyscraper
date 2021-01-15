@@ -27,6 +27,8 @@ public class FpsCounter : MyText
 #if !UNITY_EDITOR
     private void OnApplicationQuit()
     {
+        if (_timer < 30f) return;
+
         float averageFps = (float)_totalFramesCount / _timer;
         AppMetrica.Instance.ReportEvent("Application Quit", new System.Collections.Generic.Dictionary<string, object>()
         {

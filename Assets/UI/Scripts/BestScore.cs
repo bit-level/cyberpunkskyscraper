@@ -23,7 +23,11 @@ public class BestScore : MyText
             value = 0;
             label.text = "Best Score: 0";
         }
+    }
 
+    private new void Start()
+    {
+        base.Start();
         UpdateLevelSystem();
     }
 

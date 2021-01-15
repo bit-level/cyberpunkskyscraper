@@ -37,7 +37,7 @@ public class LevelSystem : MonoBehaviour
 
     #region Private Fields
 
-    private new Animation _animation;
+    private Animation _animation;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -52,8 +52,6 @@ public class LevelSystem : MonoBehaviour
 
     private void Update()
     {
-        if (_animation.IsPlaying("Show")) return;
-
         if (fill != null) fill.fillAmount = Mathf.Lerp(fill.fillAmount, progress, Time.deltaTime * 10f);
 
         // Marks colorize
