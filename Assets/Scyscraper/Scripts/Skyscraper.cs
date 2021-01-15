@@ -5,7 +5,6 @@ using System.Linq;
 
 public class Skyscraper : MonoBehaviour
 {
-	#region Fields
 
 #pragma warning disable 0649
 	[SerializeField] Transform floorPrefab;
@@ -13,6 +12,9 @@ public class Skyscraper : MonoBehaviour
 	[SerializeField] float floorMoovingSpeed = 1f;
 	[SerializeField] Transform shanksWrap;
 	[SerializeField] Transform trashWrap;
+	[SerializeField] ParticleSystem smoke;
+	[SerializeField] Transform canvas;
+	[SerializeField] Transform perfectPrefab;
 
 	[Header("Audio")]
 	[SerializeField] AudioSource gameOver;
@@ -20,6 +22,8 @@ public class Skyscraper : MonoBehaviour
 #pragma warning restore 0649
 
 	public enum State { ReadyToBuild, UnderBuild, Built }
+
+	#region Fields
 
 	private Dictionary<State, Action> statesActions;
 	private Transform currentFloor;
@@ -90,21 +94,13 @@ public class Skyscraper : MonoBehaviour
 		{
 			// Cheat tap
 
-			Vector3 correctPosition = previousFloor.localPosition;
-			correctPosition.y = currentFloor.localPosition.y;
-
-			currentFloor.localPosition = correctPosition;
-
+			MakeCurrentPositionCorrect();
 			ProcessTap();
 		}
 #endif
 		else if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
         {
-			Vector3 correctPosition = previousFloor.localPosition;
-			correctPosition.y = currentFloor.localPosition.y;
-
-			currentFloor.localPosition = correctPosition;
-
+			MakeCurrentPositionCorrect();
 			ProcessTap();
         }
 
@@ -121,9 +117,24 @@ public class Skyscraper : MonoBehaviour
 		}
 	}
 
+	private void MakeCurrentPositionCorrect()
+    {
+		Vector3 correctPosition = previousFloor.localPosition;
+		correctPosition.y = currentFloor.localPosition.y;
+
+		currentFloor.localPosition = correctPosition;
+    }
 
 	private void ProcessTap()
     {
+		float distance = GetDistanceBetweenCurrentAndPrevious2D();
+		if (distance < .125f)
+        {
+			MakeCurrentPositionCorrect();
+			Instantiate(smoke, previousFloor.transform);
+			CreatePerfectMarkIfCanvasExists();
+		}
+
 		Transform shank;
 		PutCurrentFloor(out shank);
 		if (shank == null)
@@ -138,6 +149,35 @@ public class Skyscraper : MonoBehaviour
 		moveDirection = (moveDirection == Vector3.right) ? Vector3.forward : Vector3.right;
 		time = 0f;
 		CreateNewFloor();
+    }
+
+	private float GetDistanceBetweenCurrentAndPrevious2D()
+    {
+		Vector3 c = currentFloor.localPosition;
+		Vector3 p = previousFloor.localPosition;
+
+		Vector2 current = new Vector2(c.x, c.z);
+		Vector2 previous = new Vector2(p.x, p.z);
+
+		return (current - previous).magnitude;
+    }
+
+	private void CreatePerfectMarkIfCanvasExists()
+    {
+		if (canvas != null)
+        {
+			Vector2 touchPosition;
+#if UNITY_EDITOR
+			touchPosition = Input.mousePosition;
+#else
+			touchPosition = Input.touches[0].position;
+#endif
+			touchPosition.x -= Screen.width / 2f;
+			touchPosition.y -= Screen.height / 2f;
+
+			Transform perfect = Instantiate(perfectPrefab, canvas);
+			perfect.localPosition = touchPosition;
+		}
     }
 
 	private void CreateNewFloor()
@@ -279,5 +319,5 @@ public class Skyscraper : MonoBehaviour
 		if (graphic != null)
 			graphic.color = (cheat) ? Color.green : Color.red;
     }
-    #endregion
+#endregion
 }
