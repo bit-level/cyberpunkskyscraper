@@ -49,6 +49,12 @@ public class Skyscraper : MonoBehaviour
     public static Skyscraper Instance { get; private set; }
     #endregion
 
+    #region Events
+
+    public delegate void MethodContainer();
+    public event MethodContainer OnPerfectTap;
+    #endregion
+
     #region MonoBehaviour Callbacks
 
     void Awake()
@@ -139,9 +145,11 @@ public class Skyscraper : MonoBehaviour
         float distance = GetDistanceBetweenCurrentAndPrevious2D();
         if (distance < .125f)
         {
+            // Perfect tap
             MakeCurrentPositionCorrect();
             Instantiate(smoke, previousFloor.transform);
             CreatePerfectMarkIfCanvasExists();
+            OnPerfectTap();
         }
 
         Transform shank;

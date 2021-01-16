@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class Utils : MonoBehaviour
 {
@@ -18,5 +20,16 @@ public class Utils : MonoBehaviour
     {
         Curves.Aceleration.Up = acelerationUp;
         Curves.Aceleration.Down = acelerationDown;
+    }
+
+    public static IEnumerator ChangeGraphicColor(Graphic graphic, Color startColor, Color destColor, float duration)
+    {
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            graphic.color = Color.Lerp(startColor, destColor, t / duration);
+            yield return null;
+        }
+
+        graphic.color = destColor;
     }
 }
