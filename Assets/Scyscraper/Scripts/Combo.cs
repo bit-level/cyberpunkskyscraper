@@ -6,11 +6,15 @@ using UnityEngine.UI;
 public class Combo : MonoBehaviour
 {
 #pragma warning disable 0649
+    [Header("References")]
     [SerializeField] Text amountText;
     [SerializeField] Text multiplierText;
     [SerializeField] Text resultText;
-    [SerializeField] float coolingTime = 10f;
     [SerializeField] Transform wallet;
+
+    [Header("Settings")]
+    [SerializeField] float coolingTime = 10f;
+    [SerializeField] int maximumMultiplier = 5;
 #pragma warning restore 0649
 
     private struct Item
@@ -75,14 +79,13 @@ public class Combo : MonoBehaviour
             return;
         }
 
-        _multiplierValue = Mathf.Clamp(_multiplierValue + 1, 1, 5);
+        _multiplierValue = Mathf.Clamp(_multiplierValue + 1, 1, maximumMultiplier);
         _multiplier.Self.text = "x" + _multiplierValue.ToString();
         _multiplier.Self.GetComponent<Animation>().Play("Rise Combo");
     }
 
     private void StopCombo()
     {
-        _multiplier.Self.text = "x1";
         _isComboStarted = false;
         StartCoroutine(Result());
     }
@@ -140,7 +143,7 @@ public class Combo : MonoBehaviour
 
         float duration = .8f;
 
-        for (float t = 0f; t < duration; t += Time.deltaTime)
+        for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
         {
             _multiplier.Self.transform.localPosition = Vector2.Lerp(
                 startPosition, 
@@ -151,6 +154,7 @@ public class Combo : MonoBehaviour
 
         Hide(0f);
         _multiplier.Self.transform.localPosition = startPosition;
+        _multiplier.Self.text = "x1";
 
         int resultBonus = _multiplierValue * 1000;
 
@@ -158,12 +162,12 @@ public class Combo : MonoBehaviour
         resultText.gameObject.SetActive(true);
         resultText.GetComponent<Animation>().Play("Show Result");
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSecondsRealtime(.5f);
 
         duration = .4f;
         startPosition = resultText.transform.localPosition;
 
-        for (float t = 0f; t < duration; t += Time.deltaTime)
+        for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
         {
             resultText.rectTransform.localPosition = Vector3.Lerp(
                 startPosition,

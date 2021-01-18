@@ -12,22 +12,33 @@ public class SlowMotion : MonoBehaviour
     [SerializeField] float timeScale = .5f;
 #pragma warning restore 0649
 
-    private bool state = false;
+    private bool _state = false;
 
     private readonly Color ACTIVE = new Color(1f, 1f, 1f, 1f);
     private readonly Color DISACTIVE = new Color(.5f, .5f, .5f, 1f);
     private readonly Color HIDEN = new Color(1f, 1f, 1f, 0f);
 
+    #region MonoBehaviour Callbacks
+
+    private void Awake()
+    {
+        buttonImage.color = HIDEN;
+        progressBar.color = HIDEN;
+    }
+
     private void Update()
     {
-        if (state == false && Skyscraper.Instance.CurrentState == Skyscraper.State.UnderBuild)
+        if (_state == false && Skyscraper.Instance.CurrentState == Skyscraper.State.UnderBuild)
             Show();
-        else if (state == true && Skyscraper.Instance.CurrentState == Skyscraper.State.Built)
+        else if (_state == true && Skyscraper.Instance.CurrentState == Skyscraper.State.Built)
         {
             Hide();
             Time.timeScale = 1f;
         }
     }
+    #endregion
+
+    #region Public Functions
 
     public void OnClick()
     {
@@ -57,24 +68,30 @@ public class SlowMotion : MonoBehaviour
 
     public void Show()
     {
-        state = true;
+        _state = true;
         GetComponent<Button>().interactable = true;
         StartCoroutine(ImageSetColor(buttonImage, ACTIVE));
     }
 
     public void Hide()
     {
-        state = false;
+        _state = false;
         GetComponent<Button>().interactable = false;
         StartCoroutine(ImageSetColor(buttonImage, HIDEN));
         StartCoroutine(ImageSetColor(progressBar, HIDEN));
     }
+    #endregion
+
+    #region Private Functions
 
     private void LaunchProgressBar(float activeTime)
     {
         StartCoroutine(ProgressBarSetActive(true));
         StartCoroutine(ProgressBarStartCounting(activeTime));
     }
+    #endregion
+
+    #region Coroutines
 
     private IEnumerator ProgressBarSetActive(bool active)
     {
@@ -136,4 +153,5 @@ public class SlowMotion : MonoBehaviour
 
         image.color = newColor;
     }
+    #endregion
 }

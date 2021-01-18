@@ -53,6 +53,9 @@ public class Skyscraper : MonoBehaviour
 
     public delegate void MethodContainer();
     public event MethodContainer OnPerfectTap;
+
+    public delegate void MethodContainer2(int arg);
+    public event MethodContainer2 OnGameOver;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -75,48 +78,23 @@ public class Skyscraper : MonoBehaviour
     void Update()
     {
         statesActions[CurrentState].Invoke();
-        if (cheat) hasCheatActiveOnce = true;
     }
     #endregion
 
-
-    #region Functions
+    #region Private Functions
 
     private void ReadyToBuildAction()
     {
-        if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
-        {
-            CurrentState = State.UnderBuild;
-            CreateNewFloor();
-        }
     }
 
     private void UnderBuildAction()
     {
-        if (!cheat && (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began)))
+        if (Input.GetMouseButtonDown(1))
         {
-            if (!eventSystem.IsPointerOverGameObject())
-                ProcessTap();
-        }
-#if UNITY_EDITOR
-        else if (Input.GetMouseButton(1))
-        {
-            // Cheat tap
-
-            if (!eventSystem.IsPointerOverGameObject())
-            {
-                MakeCurrentPositionCorrect();
-                ProcessTap();
-            }
-        }
-#endif
-        else if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
-        {
-            if (!eventSystem.IsPointerOverGameObject())
-            {
-                MakeCurrentPositionCorrect();
-                ProcessTap();
-            }
+            // Cheat click
+            MakeCurrentPositionCorrect();
+            ProcessTap();
+            hasCheatActiveOnce = true;
         }
 
         UpdateCurrentFloorPosition();
@@ -158,6 +136,7 @@ public class Skyscraper : MonoBehaviour
         {
             CurrentState = State.Built;
             gameOver.Play();
+            OnGameOver(FloorsCount);
             return;
         }
         tap.Play();
@@ -221,9 +200,7 @@ public class Skyscraper : MonoBehaviour
     private void UpdateCurrentFloorPosition()
     {
         if (currentFloor == null) return;
-
         currentFloorPosition = spawnPosition - moveDirection * Mathf.PingPong(time * floorMoovingSpeed, floorPrefab.localScale.x * 2f);
-
         currentFloor.localPosition = currentFloorPosition;
     }
 
@@ -329,12 +306,30 @@ public class Skyscraper : MonoBehaviour
         foreach (GameObject child in childs)
             Destroy(child);
     }
+    #endregion
+
+    #region Public Funcions
+
+    public void Tap()
+    {
+        if (CurrentState == State.ReadyToBuild)
+        {
+            CurrentState = State.UnderBuild;
+            CreateNewFloor();
+            return;
+        }
+
+        if (CurrentState != State.UnderBuild) return;
+        if (cheat) MakeCurrentPositionCorrect();
+        ProcessTap();
+    }
 
     public void SwitchCheatState(UnityEngine.UI.Graphic graphic)
     {
         cheat = !cheat;
         if (graphic != null)
             graphic.color = (cheat) ? Color.green : Color.red;
+        hasCheatActiveOnce = true;
     }
-    #endregion
+#endregion
 }

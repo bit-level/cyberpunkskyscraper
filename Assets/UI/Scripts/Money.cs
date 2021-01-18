@@ -11,10 +11,16 @@ public class Money : MonoBehaviour
 
     public static Money Instance { get; private set; }
 
-    #region Fields
+    #region Private Fields
 
     private int _amount;
     private Coroutine _animCoroutine;
+    #endregion
+
+    #region Events
+
+    public delegate void MethodContainer(int arg);
+    public event MethodContainer OnPutMoney;
     #endregion
 
     #region Constants
@@ -39,6 +45,7 @@ public class Money : MonoBehaviour
         RenderAmount(_amount + amount);
         _amount += amount;
         Save();
+        OnPutMoney(amount);
     }
     #endregion
 
