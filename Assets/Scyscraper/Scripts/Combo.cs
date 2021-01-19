@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,16 +23,17 @@ public class Combo : MonoBehaviour
         public readonly Text Self;
         public readonly Color DefaultColor;
         public readonly Color HidenColor;
+        public int Value;
 
         public Item(Text self, Color defaultColor)
         {
             Self = self;
             DefaultColor = defaultColor;
 
-            Color hiden = defaultColor;
-            hiden.a = 0f;
-
+            Color hiden = defaultColor; hiden.a = 0f;
             HidenColor = hiden;
+
+            Value = 0;
         }
     }
 
@@ -76,7 +78,7 @@ public class Combo : MonoBehaviour
                 }
 
                 Hide(0f);
-                int money = _multiplierValue * 1000;
+                int money = _multiplierValue * _amount.Value;
                 SessionMoney.Instance.PutMoney(money, false);
             }
 
@@ -95,8 +97,13 @@ public class Combo : MonoBehaviour
     private void StartCombo()
     {
         _multiplierValue = 1;
-        Show(.1f);
+        Show(0f);
         _isComboStarted = true;
+
+        NumberFormatInfo nfi = new NumberFormatInfo();
+        nfi.CurrencySymbol = "$";
+        _amount.Value = (Skyscraper.Instance.FloorsCount+1) * 100;
+        _amount.Self.text = _amount.Value.ToString("C0", nfi);
     }
 
     private void RiseCombo()
@@ -113,6 +120,11 @@ public class Combo : MonoBehaviour
         _multiplierValue = Mathf.Clamp(_multiplierValue + 1, 1, maximumMultiplier);
         _multiplier.Self.text = "x" + _multiplierValue.ToString();
         _multiplier.Self.GetComponent<Animation>().Play("Rise Combo");
+
+        NumberFormatInfo nfi = new NumberFormatInfo();
+        nfi.CurrencySymbol = "$";
+        _amount.Value = (Skyscraper.Instance.FloorsCount+1) * 100;
+        _amount.Self.text = _amount.Value.ToString("C0", nfi);
     }
 
     private void StopCombo()
@@ -189,7 +201,7 @@ public class Combo : MonoBehaviour
         _multiplier.Self.transform.localPosition = startPosition;
         _multiplier.Self.text = "x1";
 
-        int resultBonus = _multiplierValue * 1000;
+        int resultBonus = _multiplierValue * _amount.Value;
 
         resultText.text = "$" + resultBonus;
         resultText.gameObject.SetActive(true);

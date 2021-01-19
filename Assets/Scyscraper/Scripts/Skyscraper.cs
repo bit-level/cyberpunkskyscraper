@@ -22,6 +22,7 @@ public class Skyscraper : MonoBehaviour
     [SerializeField] AudioSource gameOver;
     [SerializeField] AudioSource tap;
 #pragma warning restore 0649
+    public float perfectDistance = .125f;
 
     public enum State { ReadyToBuild, UnderBuild, Built }
 
@@ -127,7 +128,7 @@ public class Skyscraper : MonoBehaviour
     private void ProcessTap()
     {
         float distance = GetDistanceBetweenCurrentAndPrevious2D();
-        if (distance < .125f)
+        if (distance < perfectDistance)
         {
             // Perfect tap
             MakeCurrentPositionCorrect();

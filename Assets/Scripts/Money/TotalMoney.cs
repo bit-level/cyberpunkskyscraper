@@ -27,7 +27,7 @@ public class TotalMoney : Money
 
     #region Public Functions
 
-    public new void PutMoney(int amount)
+    public void PutMoney(int amount)
     {
         base.PutMoney(amount);
 

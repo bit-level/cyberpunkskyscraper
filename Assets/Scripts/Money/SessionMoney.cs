@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class SessionMoney : Money
 {
 #pragma warning disable 0649
     [SerializeField] int moneyLimitForDisplayingAds = 0;
+    [SerializeField] Text lastResult;
 #pragma warning restore 0649
 
     public static SessionMoney Instance { get; private set; }
@@ -24,6 +26,10 @@ public class SessionMoney : Money
     public void PutOnTotalAccount()
     {
         ActionList al = new ActionList(GetComponent<ActionSequencer>());
+
+        NumberFormatInfo nfi = new NumberFormatInfo();
+        nfi.CurrencySymbol = "$";
+        lastResult.text = "+" + amount.ToString("C0", nfi);
 
         if (amount > 0)
         {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class Ad : MonoBehaviour
+public class Ad : MonoBehaviour, IUnityAdsListener
 {
 #pragma warning disable 0649
     [SerializeField] bool testMode = true;
@@ -24,6 +24,12 @@ public class Ad : MonoBehaviour
     };
     #endregion
 
+    #region Events
+
+    public delegate void MethodContainer();
+    public event MethodContainer OnRewardedAdsSuccessfulWatch;
+    #endregion
+
     #region MonoBehaviour Callbacks
 
     private void Awake()
@@ -34,6 +40,7 @@ public class Ad : MonoBehaviour
     private void Start()
     {
         string gameID = (Application.platform == RuntimePlatform.Android) ? GAMEID_ANDROID : GAMEID_IOS;
+        Advertisement.AddListener(this);
         Advertisement.Initialize(gameID, testMode);
     }
     #endregion
@@ -46,4 +53,22 @@ public class Ad : MonoBehaviour
 
     public void ShowIfReady(Type type) { if (IsReady(type)) Show(type); }
     #endregion
+
+    public void OnUnityAdsReady(string placementId)
+    {
+    }
+
+    public void OnUnityAdsDidError(string message)
+    {
+    }
+
+    public void OnUnityAdsDidStart(string placementId)
+    {
+    }
+
+    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+    {
+        if (placementId == _placementIds[Type.Rewarded] && showResult == ShowResult.Finished)
+            OnRewardedAdsSuccessfulWatch();
+    }
 }

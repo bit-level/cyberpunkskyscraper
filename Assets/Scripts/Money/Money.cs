@@ -15,6 +15,11 @@ public abstract class Money : MonoBehaviour
     private Coroutine _animCoroutine;
     #endregion
 
+    #region Properties
+
+    public int Amount => amount;
+    #endregion
+
     #region Functions
 
     public void PutMoney(int amount, bool animation = true)
@@ -25,6 +30,14 @@ public abstract class Money : MonoBehaviour
         else SetTextFieldValue(newAmountValue);
 
         this.amount = newAmountValue;
+    }
+
+    public bool TakeMoney(int amount)
+    {
+        if (amount > this.amount) return false;
+        RenderAmount(this.amount - amount);
+        this.amount -= amount;
+        return true;
     }
 
     protected void RenderAmount(int amount)

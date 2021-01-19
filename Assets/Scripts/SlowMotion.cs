@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +7,8 @@ public class SlowMotion : MonoBehaviour
 #pragma warning disable 0649
     [SerializeField] Image buttonImage;
     [SerializeField] Image progressBar;
+    [SerializeField] Text cost;
+    [SerializeField] Text watchAd;
     [SerializeField] float activeTime = 5f;
     [SerializeField] float timeScale = .5f;
 #pragma warning restore 0649
@@ -18,12 +19,27 @@ public class SlowMotion : MonoBehaviour
     private readonly Color DISACTIVE = new Color(.5f, .5f, .5f, 1f);
     private readonly Color HIDEN = new Color(1f, 1f, 1f, 0f);
 
+    public bool IsShowed { get; private set; }
+    public static SlowMotion Instance { get; private set; }
+
     #region MonoBehaviour Callbacks
 
     private void Awake()
     {
+        Instance = this;
+
         buttonImage.color = HIDEN;
         progressBar.color = HIDEN;
+        cost.color = HIDEN;
+        watchAd.color = HIDEN;
+    }
+
+    private void Start()
+    {
+        Skyscraper.Instance.OnGameOver += (score) =>
+        {
+            Time.timeScale = 1f;
+        };
     }
 
     private void Update()
@@ -40,27 +56,33 @@ public class SlowMotion : MonoBehaviour
 
     #region Public Functions
 
-    public void OnClick()
+    public void Activate()
     {
         ActionList al = new ActionList(GetComponent<ActionSequencer>());
 
         al.Add(() =>
         {
-            Time.timeScale = .5f;
+            Time.timeScale = timeScale;
             GetComponent<Button>().interactable = false;
             LaunchProgressBar(activeTime);
+            StartCoroutine(Utils.ChangeGraphicColor(cost, HIDEN, .5f));
+            StartCoroutine(Utils.ChangeGraphicColor(watchAd, HIDEN, .5f));
+            Skyscraper.Instance.perfectDistance = .2f;
         }, .3f);
 
         al.Add(() =>
         {
-            StartCoroutine(ImageSetColor(buttonImage, DISACTIVE));
+            StartCoroutine(Utils.ChangeGraphicColor(buttonImage, DISACTIVE, .5f));
         }, activeTime - .3f);
 
         al.Add(() =>
         {
             Time.timeScale = 1f;
             GetComponent<Button>().interactable = true;
-            StartCoroutine(ImageSetColor(buttonImage, ACTIVE));
+            StartCoroutine(Utils.ChangeGraphicColor(buttonImage, ACTIVE, .5f));
+            StartCoroutine(Utils.ChangeGraphicColor(cost, ACTIVE, .5f));
+            StartCoroutine(Utils.ChangeGraphicColor(watchAd, ACTIVE, .5f));
+            Skyscraper.Instance.perfectDistance = .125f;
         });
 
         al.Execute();
@@ -70,15 +92,23 @@ public class SlowMotion : MonoBehaviour
     {
         _state = true;
         GetComponent<Button>().interactable = true;
-        StartCoroutine(ImageSetColor(buttonImage, ACTIVE));
+        StartCoroutine(Utils.ChangeGraphicColor(buttonImage, ACTIVE, .5f));
+        StartCoroutine(Utils.ChangeGraphicColor(cost, ACTIVE, .5f));
+        StartCoroutine(Utils.ChangeGraphicColor(watchAd, ACTIVE, .5f));
+
+        IsShowed = true;
     }
 
     public void Hide()
     {
         _state = false;
         GetComponent<Button>().interactable = false;
-        StartCoroutine(ImageSetColor(buttonImage, HIDEN));
-        StartCoroutine(ImageSetColor(progressBar, HIDEN));
+        StartCoroutine(Utils.ChangeGraphicColor(buttonImage, HIDEN, .5f));
+        StartCoroutine(Utils.ChangeGraphicColor(progressBar, HIDEN, .5f));
+        StartCoroutine(Utils.ChangeGraphicColor(cost, HIDEN, .5f));
+        StartCoroutine(Utils.ChangeGraphicColor(watchAd, HIDEN, .5f));
+
+        IsShowed = false;
     }
     #endregion
 
@@ -138,20 +168,6 @@ public class SlowMotion : MonoBehaviour
         }
 
         progressBar.fillAmount = 0f;
-    }
-
-    private IEnumerator ImageSetColor(Image image, Color newColor)
-    {
-        Color startColor = buttonImage.color;
-        float duration = .3f;
-
-        for (float t = 0f; t < duration; t += Time.deltaTime)
-        {
-            image.color = Color.Lerp(startColor, newColor, t / duration);
-            yield return null;
-        }
-
-        image.color = newColor;
     }
     #endregion
 }
