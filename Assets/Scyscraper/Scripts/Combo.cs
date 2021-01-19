@@ -41,6 +41,7 @@ public class Combo : MonoBehaviour
     private bool _isComboStarted = false;
     private int _multiplierValue = 0;
     private float _coolingTimer;
+    private Coroutine _cooling, _result;
     #endregion
 
     #region Monobehaviour Callbacks
@@ -56,6 +57,36 @@ public class Combo : MonoBehaviour
     private void Start()
     {
         Skyscraper.Instance.OnPerfectTap += RiseCombo;
+
+        Skyscraper.Instance.OnGameOver += (score) =>
+        {
+            if (_cooling != null || _result != null)
+            {
+                if (_cooling != null)
+                {
+                    StopCoroutine(_cooling);
+                    _cooling = null;
+
+                }
+
+                if (_result != null)
+                {
+                    StopCoroutine(_result);
+                    _result = null;
+                }
+
+                Hide(0f);
+                int money = _multiplierValue * 1000;
+                SessionMoney.Instance.PutMoney(money, false);
+            }
+
+            Hide(0f);
+            SessionMoney.Instance.PutOnTotalAccount();
+
+            _isComboStarted = false;
+            _multiplier.Self.text = "x1";
+            _multiplierValue = 0;
+        };
     }
     #endregion
 
@@ -75,7 +106,7 @@ public class Combo : MonoBehaviour
         if (!_isComboStarted)
         {
             StartCombo();
-            StartCoroutine(Cooling());
+            _cooling = StartCoroutine(Cooling());
             return;
         }
 
@@ -87,7 +118,7 @@ public class Combo : MonoBehaviour
     private void StopCombo()
     {
         _isComboStarted = false;
-        StartCoroutine(Result());
+        _result = StartCoroutine(Result());
     }
 
     private void Hide(float duration)
@@ -132,6 +163,8 @@ public class Combo : MonoBehaviour
         }
 
         StopCombo();
+
+        _cooling = null;
     }
 
     private IEnumerator Result()
@@ -146,8 +179,8 @@ public class Combo : MonoBehaviour
         for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
         {
             _multiplier.Self.transform.localPosition = Vector2.Lerp(
-                startPosition, 
-                destPosition, 
+                startPosition,
+                destPosition,
                 Utils.Curves.Aceleration.Up.Evaluate(t / duration));
             yield return null;
         }
@@ -179,7 +212,9 @@ public class Combo : MonoBehaviour
         resultText.gameObject.SetActive(false);
         resultText.transform.localPosition = startPosition;
 
-        Money.Instance.PutMoney(resultBonus);
+        SessionMoney.Instance.PutMoney(resultBonus);
+
+        _result = null;
     }
     #endregion
 }

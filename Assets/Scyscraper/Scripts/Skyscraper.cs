@@ -37,6 +37,8 @@ public class Skyscraper : MonoBehaviour
     private bool cheat;
     private bool hasCheatActiveOnce;
 
+    public bool builtLock;
+
     public readonly float FloorHeight = 0.5f;
     #endregion
 
@@ -53,6 +55,7 @@ public class Skyscraper : MonoBehaviour
 
     public delegate void MethodContainer();
     public event MethodContainer OnPerfectTap;
+    public event MethodContainer OnGameStart;
 
     public delegate void MethodContainer2(int arg);
     public event MethodContainer2 OnGameOver;
@@ -85,6 +88,7 @@ public class Skyscraper : MonoBehaviour
 
     private void ReadyToBuildAction()
     {
+        builtLock = true;
     }
 
     private void UnderBuildAction()
@@ -103,6 +107,8 @@ public class Skyscraper : MonoBehaviour
 
     private void BuiltAction()
     {
+        if (builtLock) return;
+
         if (Input.GetMouseButtonDown(0) || Input.touches.Any(x => x.phase == TouchPhase.Began))
         {
             ClearData();
@@ -316,6 +322,7 @@ public class Skyscraper : MonoBehaviour
         {
             CurrentState = State.UnderBuild;
             CreateNewFloor();
+            OnGameStart();
             return;
         }
 
@@ -330,6 +337,11 @@ public class Skyscraper : MonoBehaviour
         if (graphic != null)
             graphic.color = (cheat) ? Color.green : Color.red;
         hasCheatActiveOnce = true;
+    }
+
+    public void SetCurrentState(State state)
+    {
+        CurrentState = state;
     }
 #endregion
 }

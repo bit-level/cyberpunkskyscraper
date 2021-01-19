@@ -24,7 +24,7 @@ public class GameStatistics : MonoBehaviour
 
     private void Start()
     {
-        Money.Instance.OnPutMoney += (amount) => _earnedMoney += amount;
+        TotalMoney.Instance.OnPutMoney += (amount) => _earnedMoney += amount;
         Skyscraper.Instance.OnGameOver += (score) =>
         {
             _scoreList.Add(score);

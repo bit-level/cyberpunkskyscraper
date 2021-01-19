@@ -1,0 +1,59 @@
+using UnityEngine;
+
+public class TotalMoney : Money
+{
+    public static TotalMoney Instance { get; private set; }
+
+    #region Events
+
+    public delegate void MethodContainer(int arg);
+    public event MethodContainer OnPutMoney;
+    #endregion
+
+    #region Constants
+
+    private const string PREFSKEY = "wallet";
+    #endregion
+
+    #region MonoBehaviour Callbacks
+
+    private void Awake()
+    {
+        Instance = this;
+        amount = LoadWalletAmount();
+        RenderAmount(amount);
+    }
+    #endregion
+
+    #region Public Functions
+
+    public new void PutMoney(int amount)
+    {
+        base.PutMoney(amount);
+
+        Save();
+        OnPutMoney(amount);
+    }
+    #endregion
+
+    #region Private Functions
+
+    private int LoadWalletAmount()
+    {
+        const string PREFSKEY = "wallet";
+        int amount;
+
+        if (PlayerPrefs.HasKey(PREFSKEY))
+            amount = PlayerPrefs.GetInt(PREFSKEY);
+        else
+            PlayerPrefs.SetInt(PREFSKEY, amount = 0);
+
+        return amount;
+    }
+   
+    private void Save()
+    {
+        PlayerPrefs.SetInt(PREFSKEY, amount);
+    }
+    #endregion
+}
