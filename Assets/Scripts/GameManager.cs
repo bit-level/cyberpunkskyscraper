@@ -2,40 +2,19 @@
 
 public class GameManager : MonoBehaviour
 {
-    #region Properties
+#pragma warning disable 0649
+    [SerializeField] RateUs rateUs;
+#pragma warning restore 0649
 
-    public static GameManager Instance { get; private set; }
-    public float TotalPlayTime { get; private set; }
-    #endregion
-
-    #region Constants
-    private const string TOTAL_PLAY_TIME_PREFS_KEY = "TotalPlayTime";
-    #endregion
-
-    #region MonoBehaviour Callbacks
-
-    private void Awake()
+    private void Start()
     {
-        Instance = this;
-        if (PlayerPrefs.HasKey(TOTAL_PLAY_TIME_PREFS_KEY))
+        rateUs.Initialize();
+        Skyscraper.Instance.OnGameOver += (score) =>
         {
-            TotalPlayTime = PlayerPrefs.GetFloat(TOTAL_PLAY_TIME_PREFS_KEY);
-        }
-        else
-        {
-            PlayerPrefs.SetFloat(TOTAL_PLAY_TIME_PREFS_KEY, TotalPlayTime = 0f);
-        }
-    }
+            bool showRateUs = (score >= 40) && (!rateUs.DoNotShowAgain) && (!rateUs.ShowLater);
 
-    private void Update()
-    {
-        if (Skyscraper.Instance.CurrentState == Skyscraper.State.UnderBuild)
-            TotalPlayTime += Time.deltaTime;
+            if (showRateUs) rateUs.Show();
+            else if (score >= 20) Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
+        };
     }
-
-    private void OnApplicationQuit()
-    {
-        PlayerPrefs.SetFloat(TOTAL_PLAY_TIME_PREFS_KEY, TotalPlayTime);
-    }
-    #endregion
 }

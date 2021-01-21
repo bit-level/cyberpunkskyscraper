@@ -45,17 +45,6 @@ public class BestScore : MyText
         label.text = string.Format("Best Score: {0}", value.ToString());
 
         UpdateLevelSystem();
-
-#if !UNITY_EDITOR
-        if (!Skyscraper.Instance.HasCheatActiveOnce)
-        {
-            AppMetrica.Instance.ReportEvent("new_best_score", new System.Collections.Generic.Dictionary<string, object>()
-            {
-                { "total_play_time", Mathf.RoundToInt(GameManager.Instance.TotalPlayTime)}
-            });
-            AppMetrica.Instance.SendEventsBuffer();
-        }
-#endif
     }
 
     private void UpdateLevelSystem()

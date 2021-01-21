@@ -52,7 +52,7 @@ public class LevelSystem : MonoBehaviour
 
     private void Update()
     {
-        if (fill != null) fill.fillAmount = Mathf.Lerp(fill.fillAmount, progress, Time.deltaTime * 10f);
+        if (fill != null) fill.fillAmount = progress;
 
         // Marks colorize
         float oneSectionLength = 1f / marks.Length;

@@ -35,10 +35,6 @@ public class SessionMoney : Money
         {
             al.AddWaiting(1f);
             al.Add(() => StartCoroutine(MoveToTotalAccount()));
-            if (amount >= moneyLimitForDisplayingAds)
-            {
-                al.Add(() => Ad.Instance.ShowIfReady(Ad.Type.Interstitial));
-            }
         }
         al.Add(() => TapToPlayButton.Instance.ShowRestart());
         al.Add(() => Skyscraper.Instance.builtLock = false);
