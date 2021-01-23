@@ -310,7 +310,6 @@ MonoBehaviour:
   smoke: {fileID: 451108218164274408, guid: 921dbd04d1dcdab47a667d51543b766b, type: 3}
   canvas: {fileID: 804820973}
   perfectPrefab: {fileID: 5621336414329857165, guid: 597f1471670a8a148ae7d8d1c27e1abb, type: 3}
-  eventSystem: {fileID: 392934851}
   gameOver: {fileID: 1608846638}
   tap: {fileID: 2079362879}
   perfectDistance: 0.125
@@ -23248,6 +23247,7 @@ GameObject:
   - component: {fileID: 1757197276}
   - component: {fileID: 1757197275}
   - component: {fileID: 1757197274}
+  - component: {fileID: 1757197277}
   m_Layer: 5
   m_Name: Tap Zone
   m_TagString: Untagged
@@ -23313,7 +23313,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1757197275}
   m_OnClick:
     m_PersistentCalls:
@@ -23368,6 +23368,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757197272}
   m_CullTransparentMesh: 1
+--- !u!114 &1757197277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757197272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d04d9a68e8dbe7c4da90b6a3a2a018b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1766068001
 GameObject:
   m_ObjectHideFlags: 0
@@ -27124,7 +27136,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.1.29
+  m_Text: 0.1.30
 --- !u!222 &2069872155
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-using UnityEngine.EventSystems;
+using UnityEngine;
 
 public class Skyscraper : MonoBehaviour
 {
@@ -16,7 +15,6 @@ public class Skyscraper : MonoBehaviour
     [SerializeField] ParticleSystem smoke;
     [SerializeField] Transform canvas;
     [SerializeField] Transform perfectPrefab;
-    [SerializeField] EventSystem eventSystem;
 
     [Header("Audio")]
     [SerializeField] AudioSource gameOver;

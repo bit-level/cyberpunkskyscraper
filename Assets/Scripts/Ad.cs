@@ -15,6 +15,8 @@ public class Ad : MonoBehaviour, IUnityAdsListener
 
     public static Ad Instance { get; private set; }
 
+    public static bool AdBlock = false;
+
     #region Private Fields
 
     private Dictionary<Type, string> _placementIds = new Dictionary<Type, string>()
@@ -49,10 +51,12 @@ public class Ad : MonoBehaviour, IUnityAdsListener
 
     public bool IsReady(Type type) => Advertisement.IsReady(_placementIds[type]);
 
-    public void Show(Type type) { Advertisement.Show(_placementIds[type]); }
+    public void Show(Type type) { if (!AdBlock) Advertisement.Show(_placementIds[type]); }
 
     public void ShowIfReady(Type type) { if (IsReady(type)) Show(type); }
     #endregion
+
+    #region IUnityAdsListeners Methods
 
     public void OnUnityAdsReady(string placementId)
     {
@@ -71,4 +75,5 @@ public class Ad : MonoBehaviour, IUnityAdsListener
         if (placementId == _placementIds[Type.Rewarded] && showResult == ShowResult.Finished)
             OnRewardedAdsSuccessfulWatch();
     }
+    #endregion
 }
