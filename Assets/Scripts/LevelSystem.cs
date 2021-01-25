@@ -45,6 +45,12 @@ public class LevelSystem : MonoBehaviour
     private bool _firstRankChanged = false;
     #endregion
 
+    #region Events
+
+    public delegate void MethodContainer();
+    public event MethodContainer OnRankUp;
+    #endregion
+
     #region MonoBehaviour Callbacks
 
     private void Awake()
@@ -79,20 +85,27 @@ public class LevelSystem : MonoBehaviour
         if (activeCount != _openRanksCount)
         {
             _openRanksCount = activeCount;
-            OnRankChanged(_openRanksCount);
+            NewRank(_openRanksCount);
         }
     }
     #endregion
 
     #region Private Functions
 
-    private void OnRankChanged(int newRank)
+    private void NewRank(int newRank)
     {
         Skyscraper.Instance.currentColorSet = ranksColorSets[newRank];
+
         if (newRank == 4) // Last
             Ad.Block[Ad.Type.Interstitial] = true;
-        if (_firstRankChanged) ShowVFX();
+
+        if (_firstRankChanged)
+        {
+            ShowVFX();
+            OnRankUp();
+        }
         _firstRankChanged = true;
+
         if (newRank > 0)
             labels[newRank - 1].GetComponent<Animation>().Play("LabelRankUp");
     }

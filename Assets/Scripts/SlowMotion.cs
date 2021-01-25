@@ -36,7 +36,7 @@ public class SlowMotion : MonoBehaviour
 
     private void Start()
     {
-        Skyscraper.Instance.OnGameOver += (score) =>
+        Skyscraper.Instance.OnGameOver += (score, bestScore) =>
         {
             Time.timeScale = 1f;
         };

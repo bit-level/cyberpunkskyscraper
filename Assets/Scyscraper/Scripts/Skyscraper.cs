@@ -48,6 +48,7 @@ public class Skyscraper : MonoBehaviour
     private bool hasCheatActiveOnce;
     private Dictionary<FloorColorSet, Material[]> materialSets;
     private float currentFloorMoovingSpeed;
+    private int bestScore;
 
     public readonly float FloorHeight = 0.5f;
     #endregion
@@ -67,7 +68,7 @@ public class Skyscraper : MonoBehaviour
     public event MethodContainer OnPerfectTap;
     public event MethodContainer OnGameStart;
 
-    public delegate void MethodContainer2(int arg);
+    public delegate void MethodContainer2(int arg1, bool arg2);
     public event MethodContainer2 OnGameOver;
     #endregion
 
@@ -161,7 +162,7 @@ public class Skyscraper : MonoBehaviour
         {
             CurrentState = State.Built;
             gameOver.Play();
-            OnGameOver(FloorsCount);
+            OnGameOver(FloorsCount, FloorsCount > bestScore);
             return;
         }
         tap.Play();
@@ -343,6 +344,7 @@ public class Skyscraper : MonoBehaviour
             CurrentState = State.UnderBuild;
             CreateNewFloor();
             OnGameStart();
+            bestScore = BestScore.Instance.Value;
             return;
         }
 

@@ -57,13 +57,11 @@ public class Product : MonoBehaviour
         {
             if (!watchAd.gameObject.activeSelf)
             {
-                print("Activate");
                 watchAd.gameObject.SetActive(true);
             }
         }
         else if (watchAd.gameObject.activeSelf)
         {
-            print("Deactivate");
             watchAd.gameObject.SetActive(false);
         }
 

@@ -3,24 +3,31 @@ using UnityEngine.UI;
 
 public class BestScore : MyText
 {
+    [SerializeField] new ParticleSystem particleSystem = null;
+
     private Text label;
     private const string PREFSKEY = "best_score";
-    private int value;
+
+    public static BestScore Instance { get; private set; }
+
+    public int Value { get; private set; }
 
     #region MonoBehaviour Callbacks
 
     private void Awake()
     {
+        Instance = this;    
+
         // Initialization
         label = GetComponent<Text>();
         if (PlayerPrefs.HasKey(PREFSKEY))
         {
-            value = PlayerPrefs.GetInt(PREFSKEY);
-            label.text = string.Format("Best Score: {0}", value.ToString());
+            Value = PlayerPrefs.GetInt(PREFSKEY);
+            label.text = string.Format("Best Score: {0}", Value.ToString());
         }
         else
         {
-            value = 0;
+            Value = 0;
             label.text = "Best Score: 0";
         }
     }
@@ -29,27 +36,31 @@ public class BestScore : MyText
     {
         base.Start();
         UpdateLevelSystem();
-    }
 
-    private void Update()
-    {
-        if (Skyscraper.Instance.CurrentState == Skyscraper.State.Built && value < Score.Instance.Value)
-            NewBestScore();
+        Skyscraper.Instance.OnGameOver += (score, bestScore) => NewBestScore();
+        Skyscraper.Instance.OnGameStart += () => label.color = Color.white;
     }
     #endregion
 
+    #region Functions
+
     private void NewBestScore()
     {
-        value = Score.Instance.Value;
-        PlayerPrefs.SetInt(PREFSKEY, value);
-        label.text = string.Format("Best Score: {0}", value.ToString());
+        Value = Score.Instance.Value;
+        PlayerPrefs.SetInt(PREFSKEY, Value);
+        label.text = string.Format("Best Score: {0}", Value.ToString());
+
+        label.color = Color.green;
+        particleSystem.Play();
+        GetComponent<Animation>().Play("NewBestScore");
 
         UpdateLevelSystem();
     }
 
     private void UpdateLevelSystem()
     {
-        float newValue = (float)value / Globals.MAXIMUM_SCORE;
+        float newValue = (float)Value / Globals.MAXIMUM_SCORE;
         LevelSystem.Instance.Progress = newValue;
     }
+    #endregion
 }

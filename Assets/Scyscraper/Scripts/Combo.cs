@@ -37,6 +37,8 @@ public class Combo : MonoBehaviour
         }
     }
 
+    public static Combo Instance { get; private set; }
+
     #region Private Fields
 
     private Item _amount, _multiplier;
@@ -46,10 +48,18 @@ public class Combo : MonoBehaviour
     private Coroutine _cooling, _result;
     #endregion
 
+    #region Events
+
+    public delegate void MethodContainer();
+    public event MethodContainer OnComboEnd;
+    #endregion
+
     #region Monobehaviour Callbacks
 
     private void Awake()
     {
+        Instance = this;
+
         _amount = new Item(amountText, amountText.color);
         _multiplier = new Item(multiplierText, multiplierText.color);
 
@@ -60,7 +70,7 @@ public class Combo : MonoBehaviour
     {
         Skyscraper.Instance.OnPerfectTap += RiseCombo;
 
-        Skyscraper.Instance.OnGameOver += (score) =>
+        Skyscraper.Instance.OnGameOver += (score, bestScore) =>
         {
             if (_cooling != null || _result != null)
             {
@@ -131,6 +141,7 @@ public class Combo : MonoBehaviour
     {
         _isComboStarted = false;
         _result = StartCoroutine(Result());
+        OnComboEnd();
     }
 
     private void Hide(float duration)

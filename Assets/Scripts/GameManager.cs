@@ -10,12 +10,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         rateUs.Initialize();
-        Skyscraper.Instance.OnGameOver += (score) =>
+        Skyscraper.Instance.OnGameOver += (score, bestScore) =>
         {
             bool showRateUs = (score >= 40) && (!rateUs.DoNotShowAgain) && (!rateUs.ShowLater);
 
             if (showRateUs) rateUs.Show();
-            else if (score >= 20) Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
+            else if (score >= 20 && !bestScore) Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
         };
     }
 
