@@ -310,9 +310,14 @@ MonoBehaviour:
   smoke: {fileID: 451108218164274408, guid: 921dbd04d1dcdab47a667d51543b766b, type: 3}
   canvas: {fileID: 804820973}
   perfectPrefab: {fileID: 5621336414329857165, guid: 597f1471670a8a148ae7d8d1c27e1abb, type: 3}
+  blue: {fileID: 2100000, guid: c73e3d33a97dad74bb2cfb829fc16ffe, type: 2}
+  pink: {fileID: 2100000, guid: b3ae5b1754f7a4a40b0bfc9063ca2dfc, type: 2}
+  red: {fileID: 2100000, guid: 475e770e678e5874e8f4933bda12b087, type: 2}
+  gold: {fileID: 2100000, guid: b2af725924217ba429fe9ee55a51381e, type: 2}
   gameOver: {fileID: 1608846638}
   tap: {fileID: 2079362879}
   perfectDistance: 0.125
+  currentColorSet: 0
   builtLock: 0
 --- !u!1 &12392407
 GameObject:
@@ -22550,6 +22555,7 @@ MonoBehaviour:
   - God
   currentPositionMark: {fileID: 933321931}
   currentPosition: 0
+  ranksColorSets: 0000000001000000020000000300000004000000
 --- !u!111 &1698881356
 Animation:
   m_ObjectHideFlags: 0
@@ -27136,7 +27142,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.1.30
+  m_Text: 0.1.31
 --- !u!222 &2069872155
 CanvasRenderer:
   m_ObjectHideFlags: 0

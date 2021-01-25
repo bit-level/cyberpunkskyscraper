@@ -14,8 +14,11 @@ public class Ad : MonoBehaviour, IUnityAdsListener
     public enum Type { Interstitial, Rewarded }
 
     public static Ad Instance { get; private set; }
-
-    public static bool AdBlock = false;
+    public static Dictionary<Type, bool> Block = new Dictionary<Type, bool>
+    {
+        { Type.Interstitial, false },
+        { Type.Rewarded, false }
+    };
 
     #region Private Fields
 
@@ -51,7 +54,7 @@ public class Ad : MonoBehaviour, IUnityAdsListener
 
     public bool IsReady(Type type) => Advertisement.IsReady(_placementIds[type]);
 
-    public void Show(Type type) { if (!AdBlock) Advertisement.Show(_placementIds[type]); }
+    public void Show(Type type) { if (!Block[type]) Advertisement.Show(_placementIds[type]); }
 
     public void ShowIfReady(Type type) { if (IsReady(type)) Show(type); }
     #endregion

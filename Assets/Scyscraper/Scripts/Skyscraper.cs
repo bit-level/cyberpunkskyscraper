@@ -16,13 +16,23 @@ public class Skyscraper : MonoBehaviour
     [SerializeField] Transform canvas;
     [SerializeField] Transform perfectPrefab;
 
+    [Header("Materials")]
+    [SerializeField] Material blue;
+    [SerializeField] Material pink;
+    [SerializeField] Material red;
+    [SerializeField] Material gold;
+
     [Header("Audio")]
     [SerializeField] AudioSource gameOver;
     [SerializeField] AudioSource tap;
 #pragma warning restore 0649
+
     public float perfectDistance = .125f;
+    public FloorColorSet currentColorSet = FloorColorSet.Blue;
+    public bool builtLock;
 
     public enum State { ReadyToBuild, UnderBuild, Built }
+    public enum FloorColorSet { Blue, Pink, Red, Gold, MultiColor }
 
     #region Fields
 
@@ -35,8 +45,7 @@ public class Skyscraper : MonoBehaviour
     private float time;
     private bool cheat;
     private bool hasCheatActiveOnce;
-
-    public bool builtLock;
+    private Dictionary<FloorColorSet, Material[]> materialSets;
 
     public readonly float FloorHeight = 0.5f;
     #endregion
@@ -75,6 +84,15 @@ public class Skyscraper : MonoBehaviour
         };
 
         previousFloor = firstFloor;
+
+        materialSets = new Dictionary<FloorColorSet, Material[]>
+        {
+            { FloorColorSet.Blue, new Material[] { blue } },
+            { FloorColorSet.Pink, new Material[] { pink } },
+            { FloorColorSet.Red, new Material[] { red } },
+            { FloorColorSet.Gold, new Material[] { gold } },
+            { FloorColorSet.MultiColor, new Material[] { blue, pink, red, gold } }
+        };
     }
 
     void Update()
@@ -184,22 +202,20 @@ public class Skyscraper : MonoBehaviour
     private void CreateNewFloor()
     {
         float texTiling = (previousFloor.localScale.x + previousFloor.localScale.z) / 10f;
-        currentFloor = InstantiateFloor(transform, UnityEngine.Random.Range(-20f, 20f), texTiling);
+        currentFloor = InstantiateFloor(transform);
         currentFloor.name = string.Format("Floor_{0}", FloorsCount + 1);
         currentFloor.localScale = new Vector3(previousFloor.localScale.x, currentFloor.localScale.y, previousFloor.localScale.z);
         currentFloorPosition = Vector3.Scale(previousFloor.localPosition, Vector3.one - moveDirection) + moveDirection * floorPrefab.localScale.x;
         currentFloorPosition.y = previousFloor.localPosition.y + previousFloor.localScale.y / 2f + currentFloor.localScale.y / 2f;
         spawnPosition = currentFloorPosition;
         currentFloor.localPosition = currentFloorPosition;
+        Material[] materialSet = materialSets[currentColorSet];
+        currentFloor.GetComponent<MeshRenderer>().material = materialSet[UnityEngine.Random.Range(0, materialSet.Length)];
     }
 
-    private Transform InstantiateFloor(Transform parent, float textureOffset, float textureTiling)
+    private Transform InstantiateFloor(Transform parent)
     {
-        var floor = Instantiate(floorPrefab, parent);
-        var mr = floor.GetComponent<MeshRenderer>();
-        mr.material.SetFloat("texture_offset", textureOffset);
-        mr.material.SetFloat("texture_tiling", textureTiling);
-        return floor;
+        return Instantiate(floorPrefab, parent);
     }
 
     private void UpdateCurrentFloorPosition()
@@ -239,20 +255,22 @@ public class Skyscraper : MonoBehaviour
         if (isShankExists)
         {
             Material mat = currentFloor.GetComponent<MeshRenderer>().material;
-            shank = InstantiateFloor(shanksWrap, mat.GetFloat("texture_offset"), mat.GetFloat("texture_tiling"));
+            shank = InstantiateFloor(shanksWrap);
             shank.name = "Shank_" + (FloorsCount + 1);
             shank.localScale = shankScale;
             shank.localPosition = shankPosition;
+            shank.GetComponent<MeshRenderer>().material = mat;
         }
         else shank = null;
 
         if (isTrashExists)
         {
             Material mat = currentFloor.GetComponent<MeshRenderer>().material;
-            trash = InstantiateFloor(trashWrap, mat.GetFloat("texture_offset"), mat.GetFloat("texture_tiling"));
+            trash = InstantiateFloor(trashWrap);
             trash.name = "Trash_" + (FloorsCount + 1);
             trash.localScale = trashScale;
             trash.localPosition = trashPosition;
+            trash.GetComponent<MeshRenderer>().material = mat;
         }
         else trash = null;
 

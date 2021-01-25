@@ -14,6 +14,7 @@ public class LevelSystem : MonoBehaviour
     [SerializeField] private RectTransform currentPositionMark;
     [Range(0f, 1f)]
     [SerializeField] private float currentPosition;
+    [SerializeField] Skyscraper.FloorColorSet[] ranksColorSets;
 #pragma warning restore 0649
 
     private readonly Color ACTIVE       = new Color(.078f, .77f, .18f);
@@ -38,6 +39,7 @@ public class LevelSystem : MonoBehaviour
     #region Private Fields
 
     private Animation _animation;
+    private int _openRanksCount = -1;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -70,6 +72,22 @@ public class LevelSystem : MonoBehaviour
             currentPositionMark.anchoredPosition,
             new Vector2(currentPosition * totalDistance, 0f),
             Time.deltaTime * 10f);
+
+        if (activeCount != _openRanksCount)
+        {
+            _openRanksCount = activeCount;
+            OnRankChanged(_openRanksCount);
+        }
+    }
+    #endregion
+
+    #region Private Functions
+
+    private void OnRankChanged(int newRank)
+    {
+        Skyscraper.Instance.currentColorSet = ranksColorSets[newRank];
+        if (newRank == 4) // Last
+            Ad.Block[Ad.Type.Interstitial] = true;
     }
     #endregion
 }
