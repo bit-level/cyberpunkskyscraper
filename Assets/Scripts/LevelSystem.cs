@@ -15,6 +15,8 @@ public class LevelSystem : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float currentPosition;
     [SerializeField] Skyscraper.FloorColorSet[] ranksColorSets;
+    [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] Animation glowAnim;
 #pragma warning restore 0649
 
     private readonly Color ACTIVE       = new Color(.078f, .77f, .18f);
@@ -40,6 +42,7 @@ public class LevelSystem : MonoBehaviour
 
     private Animation _animation;
     private int _openRanksCount = -1;
+    private bool _firstRankChanged = false;
     #endregion
 
     #region MonoBehaviour Callbacks
@@ -88,6 +91,16 @@ public class LevelSystem : MonoBehaviour
         Skyscraper.Instance.currentColorSet = ranksColorSets[newRank];
         if (newRank == 4) // Last
             Ad.Block[Ad.Type.Interstitial] = true;
+        if (_firstRankChanged) ShowVFX();
+        _firstRankChanged = true;
+        if (newRank > 0)
+            labels[newRank - 1].GetComponent<Animation>().Play("LabelRankUp");
+    }
+
+    private void ShowVFX()
+    {
+        particleSystem.Play();
+        glowAnim.Play("Glow");
     }
     #endregion
 }

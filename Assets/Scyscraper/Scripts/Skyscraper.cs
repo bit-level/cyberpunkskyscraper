@@ -9,7 +9,8 @@ public class Skyscraper : MonoBehaviour
 #pragma warning disable 0649
     [SerializeField] Transform floorPrefab;
     [SerializeField] Transform firstFloor;
-    [SerializeField] float floorMoovingSpeed = 1f;
+    [SerializeField] float floorMoovingSpeedMin = .5f;
+    [SerializeField] float floorMoovingSpeedMax = 1.5f;
     [SerializeField] Transform shanksWrap;
     [SerializeField] Transform trashWrap;
     [SerializeField] ParticleSystem smoke;
@@ -46,6 +47,7 @@ public class Skyscraper : MonoBehaviour
     private bool cheat;
     private bool hasCheatActiveOnce;
     private Dictionary<FloorColorSet, Material[]> materialSets;
+    private float currentFloorMoovingSpeed;
 
     public readonly float FloorHeight = 0.5f;
     #endregion
@@ -211,6 +213,7 @@ public class Skyscraper : MonoBehaviour
         currentFloor.localPosition = currentFloorPosition;
         Material[] materialSet = materialSets[currentColorSet];
         currentFloor.GetComponent<MeshRenderer>().material = materialSet[UnityEngine.Random.Range(0, materialSet.Length)];
+        if (FloorsCount % 10 == 0) currentFloorMoovingSpeed = UnityEngine.Random.Range(floorMoovingSpeedMin, floorMoovingSpeedMax);
     }
 
     private Transform InstantiateFloor(Transform parent)
@@ -221,7 +224,7 @@ public class Skyscraper : MonoBehaviour
     private void UpdateCurrentFloorPosition()
     {
         if (currentFloor == null) return;
-        currentFloorPosition = spawnPosition - moveDirection * Mathf.PingPong(time * floorMoovingSpeed, floorPrefab.localScale.x * 2f);
+        currentFloorPosition = spawnPosition - moveDirection * Mathf.PingPong(time * currentFloorMoovingSpeed, floorPrefab.localScale.x * 2f);
         currentFloor.localPosition = currentFloorPosition;
     }
 
