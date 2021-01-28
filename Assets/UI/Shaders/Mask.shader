@@ -57,7 +57,7 @@ Shader "Unlit/Mask"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv) * i.color * _Intensity;
-                col.a *= clamp((1 - tex2D(_Mask, i.uv).r) * _MaskMul, 0, 1);
+                col.a *= clamp((tex2D(_Mask, i.uv).r) * _MaskMul, 0, 1);
                 return col;
             }
             ENDCG

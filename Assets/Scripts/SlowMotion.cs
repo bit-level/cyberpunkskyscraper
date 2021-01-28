@@ -11,6 +11,7 @@ public class SlowMotion : MonoBehaviour
     [SerializeField] Text watchAd;
     [SerializeField] float activeTime = 5f;
     [SerializeField] float timeScale = .5f;
+    [SerializeField] float perfectDistanceBonus = .2f;
 #pragma warning restore 0649
 
     private bool _state = false;
@@ -82,7 +83,7 @@ public class SlowMotion : MonoBehaviour
             StartCoroutine(Utils.ChangeGraphicColor(buttonImage, ACTIVE, .5f));
             StartCoroutine(Utils.ChangeGraphicColor(cost, ACTIVE, .5f));
             StartCoroutine(Utils.ChangeGraphicColor(watchAd, ACTIVE, .5f));
-            Skyscraper.Instance.perfectDistance = .125f;
+            Skyscraper.Instance.perfectDistance = Skyscraper.Instance.PerfectDistanceDefault;
         });
 
         al.Execute();

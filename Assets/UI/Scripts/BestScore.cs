@@ -37,8 +37,8 @@ public class BestScore : MyText
         base.Start();
         UpdateLevelSystem();
 
-        Skyscraper.Instance.OnGameOver += (score, bestScore) => NewBestScore();
         Skyscraper.Instance.OnGameStart += () => label.color = Color.white;
+        Skyscraper.Instance.OnGameOver += (score, bestScore) => { if (bestScore) NewBestScore(); };
     }
     #endregion
 

@@ -6,17 +6,19 @@ public class LevelSystem : MonoBehaviour
 {
 #pragma warning disable 0649
     [Range(0f, 1f)]
-    [SerializeField] private float progress;
-    [SerializeField] private Image fill;
-    [SerializeField] private Image[] marks;
-    [SerializeField] private Text[] labels;
-    [SerializeField] private string[] ranks;
-    [SerializeField] private RectTransform currentPositionMark;
+    [SerializeField] float progress;
+    [SerializeField] Image fill;
+    [SerializeField] Image[] marks;
+    [SerializeField] Text[] labels;
+    [SerializeField] string[] ranks;
+    [SerializeField] string[] limits;
+    [SerializeField] RectTransform currentPositionMark;
     [Range(0f, 1f)]
-    [SerializeField] private float currentPosition;
+    [SerializeField] float currentPosition;
     [SerializeField] Skyscraper.FloorColorSet[] ranksColorSets;
-    [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] new ParticleSystem particleSystem;
     [SerializeField] Animation glowAnim;
+    [SerializeField] GameObject noAds;
 #pragma warning restore 0649
 
     private readonly Color ACTIVE       = new Color(.078f, .77f, .18f);
@@ -72,7 +74,23 @@ public class LevelSystem : MonoBehaviour
         {
             marks[i].color = (i < activeCount) ? ACTIVE : DISACTIVE;
             if (i < ranks.Length)
-                labels[i].text = (i < activeCount) ? ranks[i] : "???";
+            {
+                if (i < activeCount)
+                {
+                    labels[i].text = ranks[i];
+                    labels[i].color = Color.white;
+                }
+                else if (i == activeCount)
+                {
+                    labels[i].text = limits[i];
+                    labels[i].color = Color.white * .7f;
+                }
+                else
+                {
+                    labels[i].text = "???";
+                    labels[i].color = Color.white;
+                }
+            }
         }
 
         // Current Position mark update
@@ -94,7 +112,8 @@ public class LevelSystem : MonoBehaviour
 
     private void NewRank(int newRank)
     {
-        Skyscraper.Instance.currentColorSet = ranksColorSets[newRank];
+        if (Skyscraper.Instance != null)
+            Skyscraper.Instance.currentColorSet = ranksColorSets[newRank];
 
         if (newRank == 4) // Last
             Ad.Block[Ad.Type.Interstitial] = true;
@@ -102,7 +121,7 @@ public class LevelSystem : MonoBehaviour
         if (_firstRankChanged)
         {
             ShowVFX();
-            OnRankUp();
+            if (OnRankUp != null) OnRankUp();
         }
         _firstRankChanged = true;
 

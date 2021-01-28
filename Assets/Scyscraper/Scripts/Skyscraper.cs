@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Skyscraper : MonoBehaviour
 {
-
 #pragma warning disable 0649
     [SerializeField] Transform floorPrefab;
     [SerializeField] Transform firstFloor;
@@ -13,9 +12,15 @@ public class Skyscraper : MonoBehaviour
     [SerializeField] float floorMoovingSpeedMax = 1.5f;
     [SerializeField] Transform shanksWrap;
     [SerializeField] Transform trashWrap;
-    [SerializeField] ParticleSystem smoke;
     [SerializeField] Transform canvas;
     [SerializeField] Transform perfectPrefab;
+
+    [Header("Particle System")]
+    [SerializeField] ParticleSystem blueSmoke;
+    [SerializeField] ParticleSystem pinkSmoke;
+    [SerializeField] ParticleSystem redSmoke;
+    [SerializeField] ParticleSystem goldenSmoke;
+    [SerializeField] ParticleSystem multicolorSmoke;
 
     [Header("Materials")]
     [SerializeField] Material blue;
@@ -29,6 +34,7 @@ public class Skyscraper : MonoBehaviour
 #pragma warning restore 0649
 
     public float perfectDistance = .125f;
+    public float PerfectDistanceDefault { get; private set; }
     public FloorColorSet currentColorSet = FloorColorSet.Blue;
     public bool builtLock;
 
@@ -47,6 +53,7 @@ public class Skyscraper : MonoBehaviour
     private bool cheat;
     private bool hasCheatActiveOnce;
     private Dictionary<FloorColorSet, Material[]> materialSets;
+    private Dictionary<FloorColorSet, ParticleSystem> smokeSet;
     private float currentFloorMoovingSpeed;
     private int bestScore;
 
@@ -78,6 +85,8 @@ public class Skyscraper : MonoBehaviour
     {
         Instance = this;
 
+        PerfectDistanceDefault = perfectDistance;
+
         CurrentState = State.ReadyToBuild;
         statesActions = new Dictionary<State, Action>()
         {
@@ -95,6 +104,15 @@ public class Skyscraper : MonoBehaviour
             { FloorColorSet.Red, new Material[] { red } },
             { FloorColorSet.Gold, new Material[] { gold } },
             { FloorColorSet.MultiColor, new Material[] { blue, pink, red, gold } }
+        };
+
+        smokeSet = new Dictionary<FloorColorSet, ParticleSystem>
+        {
+            { FloorColorSet.Blue, blueSmoke },
+            { FloorColorSet.Pink, pinkSmoke },
+            { FloorColorSet.Red,  redSmoke },
+            { FloorColorSet.Gold, goldenSmoke },
+            { FloorColorSet.MultiColor, multicolorSmoke }
         };
     }
 
@@ -151,7 +169,7 @@ public class Skyscraper : MonoBehaviour
         {
             // Perfect tap
             MakeCurrentPositionCorrect();
-            Instantiate(smoke, previousFloor.transform);
+            Instantiate(smokeSet[currentColorSet], previousFloor.transform);
             CreatePerfectMarkIfCanvasExists();
             OnPerfectTap();
         }

@@ -6,18 +6,20 @@ public class Ad : MonoBehaviour, IUnityAdsListener
 {
 #pragma warning disable 0649
     [SerializeField] bool testMode = true;
+    [SerializeField] float timeLimitForStartInterstitial = 3f;
 #pragma warning restore 0649
 
     private const string GAMEID_IOS     = "3979422";
     private const string GAMEID_ANDROID = "3979423";
 
-    public enum Type { Interstitial, Rewarded }
+    public enum Type { Interstitial, Rewarded, Display }
 
     public static Ad Instance { get; private set; }
     public static Dictionary<Type, bool> Block = new Dictionary<Type, bool>
     {
         { Type.Interstitial, false },
-        { Type.Rewarded, false }
+        { Type.Rewarded, false },
+        { Type.Display, false }
     };
 
     #region Private Fields
@@ -25,7 +27,8 @@ public class Ad : MonoBehaviour, IUnityAdsListener
     private Dictionary<Type, string> _placementIds = new Dictionary<Type, string>()
     {
         { Type.Interstitial,  "video" },
-        { Type.Rewarded,      "rewardedVideo" }
+        { Type.Rewarded,      "rewardedVideo" },
+        { Type.Display,       "startInterstitial"}
     };
     #endregion
 
@@ -63,6 +66,8 @@ public class Ad : MonoBehaviour, IUnityAdsListener
 
     public void OnUnityAdsReady(string placementId)
     {
+        if (placementId == _placementIds[Type.Display] && Time.unscaledTime <= timeLimitForStartInterstitial)
+            Show(Type.Display);
     }
 
     public void OnUnityAdsDidError(string message)

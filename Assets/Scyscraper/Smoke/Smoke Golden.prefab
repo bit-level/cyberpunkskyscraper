@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 451108218164274408}
   - component: {fileID: 451108218164274409}
   m_Layer: 7
-  m_Name: Smoke
+  m_Name: Smoke Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1362,8 +1362,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.1014151, g: 0.13580571, b: 0.5, a: 0.78431374}
-        key1: {r: 0.101960786, g: 0.13725491, b: 0.5019608, a: 0.78431374}
+        key0: {r: 0.5019608, g: 0.42703706, b: 0.10196079, a: 0.78431374}
+        key1: {r: 0.5019608, g: 0.427451, b: 0.10196079, a: 0.78431374}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
