@@ -115,8 +115,8 @@ public class LevelSystem : MonoBehaviour
         if (Skyscraper.Instance != null)
             Skyscraper.Instance.currentColorSet = ranksColorSets[newRank];
 
-        if (newRank == 4) // Last
-            Ad.Block[Ad.Type.Interstitial] = true;
+        if (newRank == 4) // Last rank achived
+            NoAds.Activate();            
 
         if (_firstRankChanged)
         {

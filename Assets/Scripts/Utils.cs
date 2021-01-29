@@ -106,4 +106,9 @@ public class Utils : MonoBehaviour
         foreach (Graphic graphic in graphics)
             graphic.color = destColor;
     }
+
+    public void OpenURL(string url)
+    {
+        Application.OpenURL(url);
+    }
 }
