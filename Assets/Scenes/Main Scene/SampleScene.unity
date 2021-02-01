@@ -1929,7 +1929,7 @@ MonoBehaviour:
   rateButton: {fileID: 1154359221}
   rateButtonText: {fileID: 400737983}
   linkAppStore: https://www.apple.com/
-  linkGooglePlay: https://play.google.com/store
+  linkGooglePlay: https://play.google.com/store/apps/details?id=com.BitLevel.Skyscraper
 --- !u!111 &107703882
 Animation:
   m_ObjectHideFlags: 0
@@ -2189,6 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35203d239cb384246ac9092b11ccac79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  description: {fileID: 1615705433}
 --- !u!111 &124831152
 Animation:
   m_ObjectHideFlags: 0
@@ -17248,8 +17249,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d0da38204de5ec94ba7c102005e730ff, type: 3}
   musicSource: {fileID: 883088691}
   musicVolumes:
-  - 0.3
-  - 0.3
+  - 0.6
+  - 0.6
   windClips:
   - {fileID: 8300000, guid: 26f9c8be72a116644808a3be9241aaf7, type: 3}
   - {fileID: 8300000, guid: e5329262855fc8b4fa15d4ce966c57c8, type: 3}
@@ -29273,6 +29274,8 @@ GameObject:
   - component: {fileID: 1611605150}
   - component: {fileID: 1611605149}
   - component: {fileID: 1611605151}
+  - component: {fileID: 1611605153}
+  - component: {fileID: 1611605152}
   m_Layer: 5
   m_Name: Instagram
   m_TagString: Untagged
@@ -29393,6 +29396,58 @@ MonoBehaviour:
           m_StringArgument: https://www.instagram.com/bitlevelg/
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 72265081}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1611605152}
+        m_TargetAssemblyTypeName: Instagram, Assembly-CSharp
+        m_MethodName: PlayClickAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1611605152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611605147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64cd33bcc9330854f9d40679e1c3d2d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!111 &1611605153
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611605147}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 2bd45c18b4a925c45971d697d94113bd, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1615705431
 GameObject:
   m_ObjectHideFlags: 0
@@ -29463,8 +29518,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You can buy ad deactivation for $ 0.99 or play the game to the end and
-    get it for free
+  m_Text: You can buy ad deactivation for {0} or play the game to the end and get
+    it for free
 --- !u!222 &1615705434
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40162,7 +40217,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0.1.36
+  m_Text: 0.1.37
 --- !u!222 &2069872155
 CanvasRenderer:
   m_ObjectHideFlags: 0

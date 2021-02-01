@@ -91,6 +91,16 @@ namespace CyberpunkSkyscraper
             BuyProductID(_noAds.generalId);
         }
 
+        public static string GetPrice(string productId)
+        {
+            if (storeController == null) return string.Empty;
+
+            var product = storeController.products.WithID(productId);
+            if (product == null) return string.Empty;
+
+            return product.metadata.localizedPriceString;
+        }
+
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
             print("OnInitialized: PASS");
