@@ -66,8 +66,10 @@ public class Ad : MonoBehaviour, IUnityAdsListener
 
     public void OnUnityAdsReady(string placementId)
     {
+#if !UNITY_EDITOR
         if (placementId == _placementIds[Type.Display] && Time.unscaledTime <= timeLimitForStartInterstitial)
             Show(Type.Display);
+#endif
     }
 
     public void OnUnityAdsDidError(string message)
@@ -83,5 +85,5 @@ public class Ad : MonoBehaviour, IUnityAdsListener
         if (placementId == _placementIds[Type.Rewarded] && showResult == ShowResult.Finished)
             OnRewardedAdsSuccessfulWatch();
     }
-    #endregion
+#endregion
 }

@@ -14,6 +14,7 @@ public class Skyscraper : MonoBehaviour
     [SerializeField] Transform trashWrap;
     [SerializeField] Transform canvas;
     [SerializeField] Transform perfectPrefab;
+    [SerializeField] float[] firstFloorScales;
 
     [Header("Particle System")]
     [SerializeField] ParticleSystem blueSmoke;
@@ -34,9 +35,10 @@ public class Skyscraper : MonoBehaviour
 #pragma warning restore 0649
 
     public float perfectDistance = .125f;
-    public float PerfectDistanceDefault { get; private set; }
     public FloorColorSet currentColorSet = FloorColorSet.Blue;
     public bool builtLock;
+
+    private const string FIRST_FLOOR_SCALE_PREFS_KEY = "FirstFloorScaleIndex";
 
     public enum State { ReadyToBuild, UnderBuild, Built }
     public enum FloorColorSet { Blue, Pink, Red, Gold, MultiColor }
@@ -56,6 +58,7 @@ public class Skyscraper : MonoBehaviour
     private Dictionary<FloorColorSet, ParticleSystem> smokeSet;
     private float currentFloorMoovingSpeed;
     private int bestScore;
+    private int firstFloorScaleIndex = 0;
 
     public readonly float FloorHeight = 0.5f;
     #endregion
@@ -66,6 +69,14 @@ public class Skyscraper : MonoBehaviour
     public State CurrentState { get; private set; }
     public bool Cheat => cheat;
     public bool HasCheatActiveOnce => hasCheatActiveOnce;
+    public float PerfectDistanceDefault { get; private set; }
+    public int FirstFloorScaleIndex
+    {
+        get => firstFloorScaleIndex;
+        set { firstFloorScaleIndex = Mathf.Clamp(value, 0, firstFloorScales.Length - 1); }
+    }
+    public int LevelsCount => firstFloorScales.Length;
+
     public static Skyscraper Instance { get; private set; }
     #endregion
 
@@ -114,6 +125,16 @@ public class Skyscraper : MonoBehaviour
             { FloorColorSet.Gold, goldenSmoke },
             { FloorColorSet.MultiColor, multicolorSmoke }
         };
+
+        if (PlayerPrefs.HasKey(FIRST_FLOOR_SCALE_PREFS_KEY))
+        {
+            FirstFloorScaleIndex = PlayerPrefs.GetInt(FIRST_FLOOR_SCALE_PREFS_KEY);
+        }
+        else
+        {
+            PlayerPrefs.SetInt(FIRST_FLOOR_SCALE_PREFS_KEY, 0);
+            FirstFloorScaleIndex = 0;
+        }
     }
 
     void Update()
@@ -220,12 +241,10 @@ public class Skyscraper : MonoBehaviour
         }
     }
 
-    private void CreateNewFloor()
+    private void CreateNewFloor(bool firstFloor = false)
     {
-        float texTiling = (previousFloor.localScale.x + previousFloor.localScale.z) / 10f;
         currentFloor = InstantiateFloor(transform);
         currentFloor.name = string.Format("Floor_{0}", FloorsCount + 1);
-        currentFloor.localScale = new Vector3(previousFloor.localScale.x, currentFloor.localScale.y, previousFloor.localScale.z);
         currentFloorPosition = Vector3.Scale(previousFloor.localPosition, Vector3.one - moveDirection) + moveDirection * floorPrefab.localScale.x;
         currentFloorPosition.y = previousFloor.localPosition.y + previousFloor.localScale.y / 2f + currentFloor.localScale.y / 2f;
         spawnPosition = currentFloorPosition;
@@ -233,6 +252,17 @@ public class Skyscraper : MonoBehaviour
         Material[] materialSet = materialSets[currentColorSet];
         currentFloor.GetComponent<MeshRenderer>().material = materialSet[UnityEngine.Random.Range(0, materialSet.Length)];
         if (FloorsCount % 10 == 0) currentFloorMoovingSpeed = UnityEngine.Random.Range(floorMoovingSpeedMin, floorMoovingSpeedMax);
+
+        Vector3 scale;
+        scale.y = currentFloor.localScale.y;
+        if (firstFloor) scale.x = scale.z = firstFloorScales[firstFloorScaleIndex];
+        else
+        {
+            scale.x = previousFloor.localScale.x;
+            scale.z = previousFloor.localScale.z;
+        }
+
+        currentFloor.localScale = scale;
     }
 
     private Transform InstantiateFloor(Transform parent)
@@ -360,7 +390,9 @@ public class Skyscraper : MonoBehaviour
         if (CurrentState == State.ReadyToBuild)
         {
             CurrentState = State.UnderBuild;
-            CreateNewFloor();
+            CreateNewFloor(true);
+            MakeCurrentPositionCorrect();
+            ProcessTap();
             OnGameStart();
             bestScore = BestScore.Instance.Value;
             return;
@@ -382,6 +414,11 @@ public class Skyscraper : MonoBehaviour
     public void SetCurrentState(State state)
     {
         CurrentState = state;
+    }
+    
+    public void FirstFloorSizeLevelUp()
+    {
+        PlayerPrefs.SetInt(FIRST_FLOOR_SCALE_PREFS_KEY, ++FirstFloorScaleIndex);
     }
 #endregion
 }

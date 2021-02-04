@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_Coor
+  m_Name: Unlit_Color
   m_Shader: {fileID: 4800000, guid: 9214315fb7184854fb0a40e3d8a68467, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

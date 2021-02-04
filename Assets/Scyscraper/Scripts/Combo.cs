@@ -46,6 +46,7 @@ public class Combo : MonoBehaviour
     private int _multiplierValue = 0;
     private float _coolingTimer;
     private Coroutine _cooling, _result;
+    private int _resultMoney;
     #endregion
 
     #region Events
@@ -122,6 +123,11 @@ public class Combo : MonoBehaviour
 
         if (!_isComboStarted)
         {
+            if (_result != null)
+            {
+                SkipResultAnim();
+            }
+
             StartCombo();
             _cooling = StartCoroutine(Cooling());
             return;
@@ -140,8 +146,15 @@ public class Combo : MonoBehaviour
     private void StopCombo()
     {
         _isComboStarted = false;
-        _result = StartCoroutine(Result());
+        _result = StartCoroutine(Result(_multiplierValue * _amount.Value));
         OnComboEnd();
+    }
+
+    private void SkipResultAnim()
+    {
+        StopCoroutine(_result);
+        _result = null;
+        SessionMoney.Instance.PutMoney(_resultMoney);
     }
 
     private void Hide(float duration)
@@ -190,8 +203,10 @@ public class Combo : MonoBehaviour
         _cooling = null;
     }
 
-    private IEnumerator Result()
+    private IEnumerator Result(int resultMoney)
     {
+        _resultMoney = resultMoney;
+
         Show(0f);
 
         Vector2 startPosition = _multiplier.Self.transform.localPosition;
@@ -212,9 +227,7 @@ public class Combo : MonoBehaviour
         _multiplier.Self.transform.localPosition = startPosition;
         _multiplier.Self.text = "x1";
 
-        int resultBonus = _multiplierValue * _amount.Value;
-
-        resultText.text = "$" + resultBonus;
+        resultText.text = "$" + resultMoney;
         resultText.gameObject.SetActive(true);
         resultText.GetComponent<Animation>().Play("Show Result");
 
@@ -235,7 +248,7 @@ public class Combo : MonoBehaviour
         resultText.gameObject.SetActive(false);
         resultText.transform.localPosition = startPosition;
 
-        SessionMoney.Instance.PutMoney(resultBonus);
+        SessionMoney.Instance.PutMoney(resultMoney);
 
         _result = null;
     }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Product : MonoBehaviour
 {
 #pragma warning disable 0649
+    [SerializeField] Buyable buyable;
     [SerializeField] Text costLabel;
     [SerializeField] Text watchAd;
     [SerializeField] int cost = 0;
@@ -23,46 +24,55 @@ public class Product : MonoBehaviour
             DefaultColor = label.color;
             NotEnoughMoney = DefaultColor; NotEnoughMoney.a = .6f;
         }
+
+        public void UpdateLabel(int costValue)
+        {
+            var nfi = new NumberFormatInfo();
+            nfi.CurrencySymbol = "$";
+            label.text = costValue.ToString("C0", nfi);
+        }
     }
-    
-    private NumberFormatInfo _nfi;
+
     private bool _used = false;
     private Cost _cost;
 
+    #region MonoBehaviour Callbacks
+
     private void Awake()
     {
-        _nfi = new NumberFormatInfo();
-        _nfi.CurrencySymbol = "$";
-
-        costLabel.text = cost.ToString("C0", _nfi);
-
         _cost = new Cost(costLabel);
+        _cost.UpdateLabel(cost);
     }
 
     private void Start()
     {
-        Ad.Instance.OnRewardedAdsSuccessfulWatch += () =>
+        if (watchAd != null)
         {
-            print("Rewarded ads watched");
-            GetComponent<SlowMotion>().Activate();
-            _used = true;
-        };
+            Ad.Instance.OnRewardedAdsSuccessfulWatch += () =>
+            {
+                GetComponent<SlowMotion>().Activate();
+                _used = true;
+            };
+        }
 
         Skyscraper.Instance.OnGameStart += () => _used = false;
     }
 
     private void Update()
     {
-        if (cost >= TotalMoney.Instance.Amount && Ad.Instance.IsReady(Ad.Type.Rewarded) && !_used)
+        if (watchAd != null)
         {
-            if (!watchAd.gameObject.activeSelf)
+            if (cost > TotalMoney.Instance.Amount && Ad.Instance.IsReady(Ad.Type.Rewarded) && !_used)
             {
-                watchAd.gameObject.SetActive(true);
+                if (!watchAd.gameObject.activeSelf)
+                {
+                    watchAd.gameObject.SetActive(true);
+                }
             }
-        }
-        else if (watchAd.gameObject.activeSelf)
-        {
-            watchAd.gameObject.SetActive(false);
+            else if (watchAd.gameObject.activeSelf)
+            {
+                watchAd.gameObject.SetActive(false);
+            }
         }
 
         if (cost > TotalMoney.Instance.Amount && SlowMotion.Instance.IsShowed)
@@ -70,20 +80,37 @@ public class Product : MonoBehaviour
             _cost.label.color = _cost.NotEnoughMoney;
         }
     }
+    #endregion
+
+    #region Public Functions
 
     public void Buy()
     {
         if (cost <= TotalMoney.Instance.Amount)
         {
             TotalMoney.Instance.TakeMoney(cost);
-            GetComponent<SlowMotion>().Activate();
+            buyable.OnBuy();
         }
         else
         {
-            if (!_used)
+            if (watchAd != null && !_used)
                 Ad.Instance.ShowIfReady(Ad.Type.Rewarded);
             else
                 costLabel.GetComponent<Animation>().Play("NotEnoughMoney");
         }
     }
+
+    public void SetCost(int value)
+    {
+        cost = value;
+        _cost.UpdateLabel(value);
+    }
+
+    public int GetCost() => cost;
+    #endregion
+}
+
+public abstract class Buyable : MonoBehaviour
+{
+    public abstract void OnBuy();
 }

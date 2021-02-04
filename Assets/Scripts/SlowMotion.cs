@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlowMotion : MonoBehaviour
+public class SlowMotion : Buyable
 {
 #pragma warning disable 0649
     [SerializeField] Image buttonImage;
@@ -119,6 +119,11 @@ public class SlowMotion : MonoBehaviour
     {
         StartCoroutine(ProgressBarSetActive(true));
         StartCoroutine(ProgressBarStartCounting(activeTime));
+    }
+
+    public override void OnBuy()
+    {
+        Activate();
     }
     #endregion
 

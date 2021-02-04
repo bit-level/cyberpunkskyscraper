@@ -34,6 +34,12 @@ public class TotalMoney : Money
         Save();
         OnPutMoney(amount);
     }
+
+    public new void TakeMoney(int amount)
+    {
+        base.TakeMoney(amount);
+        Save();
+    }
     #endregion
 
     #region Private Functions
