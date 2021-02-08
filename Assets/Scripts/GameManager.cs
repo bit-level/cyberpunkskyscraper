@@ -31,4 +31,18 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         SceneManager.LoadScene(0);
     }
+
+    public void DeleteProgress()
+    {
+        string[] keys = {
+            "best_score", "FirstFloorScaleIndex", "FloorSizeLevelUp::Hint",
+            "RateUs::DoNotShowAgain", "RateUs::ShowLater", "RateUs::ShowLaterReset",
+            "wallet"
+        };
+
+        foreach (string key in keys)
+            PlayerPrefs.DeleteKey(key);    
+
+        SceneManager.LoadScene(0);
+    }
 }
