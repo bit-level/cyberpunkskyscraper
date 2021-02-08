@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] RateUs rateUs;
 #pragma warning restore 0649
 
+    private int _adShowsCount = 0;
+
     private void Start()
     {
         rateUs.Initialize();
@@ -16,7 +18,11 @@ public class GameManager : MonoBehaviour
             bool showRateUs = (score >= 40) && (!rateUs.DoNotShowAgain) && (!rateUs.ShowLater);
 
             if (showRateUs) rateUs.Show();
-            else if (score >= 20 && !bestScore) Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
+            else if (score >= 20 && !bestScore)
+            {
+                if (_adShowsCount++ % 3 != 0)
+                    Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
+            }
         };
     }
 

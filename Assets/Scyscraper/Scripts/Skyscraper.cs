@@ -59,6 +59,7 @@ public class Skyscraper : MonoBehaviour
     private float currentFloorMoovingSpeed;
     private int bestScore;
     private int firstFloorScaleIndex = 0;
+    private int spawnSide;
 
     public readonly float FloorHeight = 0.5f;
     #endregion
@@ -241,11 +242,14 @@ public class Skyscraper : MonoBehaviour
         }
     }
 
+
     private void CreateNewFloor(bool firstFloor = false)
     {
+        spawnSide = (FloorsCount % 4 < 2) ? 1 : -1;
+
         currentFloor = InstantiateFloor(transform);
         currentFloor.name = string.Format("Floor_{0}", FloorsCount + 1);
-        currentFloorPosition = Vector3.Scale(previousFloor.localPosition, Vector3.one - moveDirection) + moveDirection * floorPrefab.localScale.x;
+        currentFloorPosition = Vector3.Scale(previousFloor.localPosition, Vector3.one - moveDirection) + moveDirection * floorPrefab.localScale.x * spawnSide;
         currentFloorPosition.y = previousFloor.localPosition.y + previousFloor.localScale.y / 2f + currentFloor.localScale.y / 2f;
         spawnPosition = currentFloorPosition;
         currentFloor.localPosition = currentFloorPosition;
@@ -273,7 +277,7 @@ public class Skyscraper : MonoBehaviour
     private void UpdateCurrentFloorPosition()
     {
         if (currentFloor == null) return;
-        currentFloorPosition = spawnPosition - moveDirection * Mathf.PingPong(time * currentFloorMoovingSpeed, floorPrefab.localScale.x * 2f);
+        currentFloorPosition = spawnPosition - moveDirection * Mathf.PingPong(time * currentFloorMoovingSpeed, floorPrefab.localScale.x * 2f) * spawnSide;
         currentFloor.localPosition = currentFloorPosition;
     }
 

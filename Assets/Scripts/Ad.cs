@@ -59,7 +59,7 @@ public class Ad : MonoBehaviour, IUnityAdsListener
 
     public void Show(Type type) { if (!Block[type]) Advertisement.Show(_placementIds[type]); }
 
-    public void ShowIfReady(Type type) { if (IsReady(type)) Show(type); }
+    public bool ShowIfReady(Type type) { if (IsReady(type)) Show(type); return IsReady(type); }
     #endregion
 
     #region IUnityAdsListeners Methods
