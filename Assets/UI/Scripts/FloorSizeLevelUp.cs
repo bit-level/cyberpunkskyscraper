@@ -8,9 +8,13 @@ namespace CyberpunkSkyscraper
         [SerializeField] int[] prices = new int[4];
         [SerializeField] ColorStates image;
         [SerializeField] AudioSource playOnBuy;
+        [SerializeField] HintScreen hintScreen;
 #pragma warning restore 0649
 
         private Product _product;
+        private bool _mayBuy = false;
+
+        private const string HINT_PREFS_KEY = "FloorSizeLevelUp::Hint";
 
         private void Start()
         {
@@ -21,8 +25,12 @@ namespace CyberpunkSkyscraper
         private void Update()
         {
             int walletAmount = TotalMoney.Instance.Amount;
-            bool mayBuy = _product.GetCost() <= walletAmount;
-            image.SetState(mayBuy ? ColorStates.State.Active : ColorStates.State.Inactive);
+            if (_mayBuy != _product.GetCost() <= walletAmount)
+            {
+                _mayBuy = _product.GetCost() <= walletAmount;
+                image.SetState(_mayBuy ? ColorStates.State.Active : ColorStates.State.Inactive);
+                if (_mayBuy) OnBecomeBuyable();
+            }
         }
 
         public override void OnBuy()
@@ -41,6 +49,21 @@ namespace CyberpunkSkyscraper
                 product.SetCost(prices[skyscraper.FirstFloorScaleIndex]);
             else
                 Destroy(gameObject);
+        }
+
+        private void OnBecomeBuyable()
+        {
+            bool mustShowHint = !PlayerPrefs.HasKey(HINT_PREFS_KEY);
+            if (mustShowHint)
+            {
+                ShowHint();
+                PlayerPrefs.SetInt(HINT_PREFS_KEY, 1);
+            }
+        }
+
+        private void ShowHint()
+        {
+            hintScreen.Show();
         }
     }
 }
