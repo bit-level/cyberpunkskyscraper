@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
             bool showRateUs = (score >= 40) && (!rateUs.DoNotShowAgain) && (!rateUs.ShowLater);
 
             if (showRateUs) rateUs.Show();
-            else if (score >= 20 && !bestScore)
+            else if (score >= 10 && !bestScore)
             {
                 if (_adShowsCount++ % 3 != 0)
                     Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
