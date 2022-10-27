@@ -9,6 +9,11 @@ public class GameManager : MonoBehaviour
 
     private int _adShowsCount = 0;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     private void Start()
     {
         rateUs.Initialize();

@@ -11,7 +11,6 @@ public class SlowMotion : Buyable
     [SerializeField] Text watchAd;
     [SerializeField] float activeTime = 5f;
     [SerializeField] float timeScale = .5f;
-    [SerializeField] float perfectDistanceBonus = .2f;
 #pragma warning restore 0649
 
     private bool _state = false;

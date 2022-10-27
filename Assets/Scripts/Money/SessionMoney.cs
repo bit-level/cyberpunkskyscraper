@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class SessionMoney : Money
 {
 #pragma warning disable 0649
-    [SerializeField] int moneyLimitForDisplayingAds = 0;
     [SerializeField] Text lastResult;
 #pragma warning restore 0649
 
