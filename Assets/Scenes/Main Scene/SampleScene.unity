@@ -96,7 +96,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: b50b40b2e7b960d459f227a4d19aa0c6, type: 2}
+  m_LightingDataAsset: {fileID: 0}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 477cc4148fad3449482a3bc3178594e2, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -17659,45 +17659,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b875a5e4cfd554288496e477308a68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicClips:
-  - {fileID: 8300000, guid: 647766db27ce3654192663bbf92ec7b9, type: 3}
-  - {fileID: 8300000, guid: d0da38204de5ec94ba7c102005e730ff, type: 3}
+  musicClips: []
   musicSource: {fileID: 883088691}
-  musicVolumes:
-  - 0.6
-  - 0.6
-  windClips:
-  - {fileID: 8300000, guid: 26f9c8be72a116644808a3be9241aaf7, type: 3}
-  - {fileID: 8300000, guid: e5329262855fc8b4fa15d4ce966c57c8, type: 3}
-  - {fileID: 8300000, guid: 012ed05c245b28544a1d0903850e3c57, type: 3}
-  - {fileID: 8300000, guid: f4f7a52074d9de84e9c92623bdbb58e8, type: 3}
-  - {fileID: 8300000, guid: ddbfd70d3c7be044b9519a7f92eb9809, type: 3}
-  - {fileID: 8300000, guid: 5e66d9f25d13c974d84613fbd162c478, type: 3}
+  musicVolumes: []
+  windClips: []
   windSource: {fileID: 2132214078}
-  windVolumes:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  thunderClips:
-  - {fileID: 8300000, guid: c683c9baf56132c4490b3c298ac974b9, type: 3}
-  - {fileID: 8300000, guid: c677349054d59d04cbf0898e68205643, type: 3}
-  - {fileID: 8300000, guid: 84bf745583db28f4aa6b15f0d574e1f8, type: 3}
-  - {fileID: 8300000, guid: d8f3b5d38733405439a0a87799e99a17, type: 3}
-  - {fileID: 8300000, guid: 445762f8e07121a43b0bb03d4d852556, type: 3}
-  - {fileID: 8300000, guid: 05a077c9355832147aab23e97e8666c3, type: 3}
+  windVolumes: []
+  thunderClips: []
   thunderSource: {fileID: 1260164120}
-  thunderVolumes:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
+  thunderVolumes: []
   thunderIntervalMin: 45
   thunderIntervalMax: 120
+  disableMusic: 1
+  disableWind: 1
+  disableThunder: 1
   start: {fileID: 848636772}
   levelUp: {fileID: 90177432}
   newBestScore: {fileID: 1192114297}
