@@ -53,17 +53,7 @@ public class GameStatistics : MonoBehaviour
 
         if (!Skyscraper.Instance.HasCheatActiveOnce && _timer >= 15f && sendToAppMetrica)
         {
-            AppMetrica.Instance.ReportEvent("Session result", new Dictionary<string, object>()
-            {
-                { "Playing Time (min)", _timer / 60f },
-                { "Miminum Score", min },
-                { "Maximum Score", max },
-                { "Average Score", avg },
-                { "Earned Money", _earnedMoney },
-                { "Games Count", _gamesCount },
-                { "Platform",  Application.platform }
-            });
-            AppMetrica.Instance.SendEventsBuffer();
+            // TODO: Send analytics
         }
     }
     #endregion

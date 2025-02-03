@@ -4,12 +4,11 @@ using UnityEngine.UI;
 
 public class Product : MonoBehaviour
 {
-#pragma warning disable 0649
-    [SerializeField] Buyable buyable;
-    [SerializeField] Text costLabel;
-    [SerializeField] Text watchAd;
-    [SerializeField] int cost = 0;
-#pragma warning restore 0649
+    [SerializeField] private Buyable buyable;
+    [SerializeField] private Text costLabel;
+    [SerializeField] private Text watchAd;
+    [SerializeField] private int cost = 0;
+
 
     private struct Cost
     {
@@ -36,8 +35,6 @@ public class Product : MonoBehaviour
     private bool _used = false;
     private Cost _cost;
 
-    #region MonoBehaviour Callbacks
-
     private void Awake()
     {
         _cost = new Cost(costLabel);
@@ -48,7 +45,7 @@ public class Product : MonoBehaviour
     {
         if (watchAd != null)
         {
-            Ad.Instance.OnRewardedAdsSuccessfulWatch += () =>
+            Ad.Instance.RewardedWatched += () =>
             {
                 GetComponent<SlowMotion>().Activate();
                 _used = true;
@@ -80,9 +77,6 @@ public class Product : MonoBehaviour
             _cost.label.color = _cost.NotEnoughMoney;
         }
     }
-    #endregion
-
-    #region Public Functions
 
     public void Buy()
     {
@@ -107,7 +101,6 @@ public class Product : MonoBehaviour
     }
 
     public int GetCost() => cost;
-    #endregion
 }
 
 public abstract class Buyable : MonoBehaviour

@@ -18,8 +18,8 @@ public class NoAds : MonoBehaviour
     {
         if (Instance == null) return;
         PlayerPrefs.SetInt(PREFS_KEY, 1);
-        Ad.Block[Ad.Type.Display] = true;
-        Ad.Block[Ad.Type.Interstitial] = true;
+        Ad.Instance.Block[Ad.Type.Display] = true;
+        Ad.Instance.Block[Ad.Type.Interstitial] = true;
         Destroy(Instance.gameObject);
         Destroy(Instance.noAdsImage);
     }
