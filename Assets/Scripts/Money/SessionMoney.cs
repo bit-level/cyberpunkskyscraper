@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class SessionMoney : Money
 {
-#pragma warning disable 0649
-    [SerializeField] Text lastResult;
-#pragma warning restore 0649
+    [SerializeField] private Text lastResult;
+    [SerializeField] private Text view;
 
     public static SessionMoney Instance { get; private set; }
 
@@ -75,16 +74,18 @@ public class SessionMoney : Money
 
     private void Hide()
     {
-        Text graphic = GetComponentInChildren<Text>();
-        Color hiden = graphic.color; hiden.a = 0f;
-        graphic.color = hiden;
+        Color hiden = view.color;
+        hiden.a = 0f;
+        view.color = hiden;
     }
     
+
     private void Show()
     {
-        Text graphic = GetComponentInChildren<Text>();
-        Color showed = graphic.color; showed.a = 1f;
-        graphic.color = showed;
+        Color showed = view.color;
+        showed.a = 1f;
+        view.color = showed;
     }
+
     #endregion
 }

@@ -153,16 +153,16 @@ public class Skyscraper : MonoBehaviour
 
     private void UnderBuildAction()
     {
-        if (Input.GetMouseButtonDown(1))
+        UpdateCurrentFloorPosition();
+        time += Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             // Cheat click
             MakeCurrentPositionCorrect();
             ProcessTap();
             hasCheatActiveOnce = true;
         }
-
-        UpdateCurrentFloorPosition();
-        time += Time.deltaTime;
     }
 
     private void BuiltAction()

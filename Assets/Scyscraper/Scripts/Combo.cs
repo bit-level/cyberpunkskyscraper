@@ -86,6 +86,7 @@ public class Combo : MonoBehaviour
                 {
                     StopCoroutine(_result);
                     _result = null;
+                    resultText.gameObject.SetActive(false);
                 }
 
                 Hide(0f);
@@ -155,6 +156,7 @@ public class Combo : MonoBehaviour
         StopCoroutine(_result);
         _result = null;
         SessionMoney.Instance.PutMoney(_resultMoney);
+        resultText.gameObject.SetActive(false);
     }
 
     private void Hide(float duration)
