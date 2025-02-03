@@ -3,9 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-#pragma warning disable 0649
-    [SerializeField] RateUs rateUs;
-#pragma warning restore 0649
+    [SerializeField] private GameConfig gameConfig;
+    [SerializeField] private RateUs rateUs;
 
     private int _adShowsCount = 0;
 
@@ -20,7 +19,7 @@ public class GameManager : MonoBehaviour
 
         Skyscraper.Instance.OnGameOver += (score, bestScore) =>
         {
-            bool showRateUs = (score >= 40) && (!rateUs.DoNotShowAgain) && (!rateUs.ShowLater);
+            bool showRateUs = score >= 40 && !rateUs.DoNotShowAgain && !rateUs.ShowLater && !gameConfig.DisableRateUsPrompt;
 
             if (showRateUs) rateUs.Show();
             else if (score >= 10 && !bestScore)
