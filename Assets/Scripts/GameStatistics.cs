@@ -51,7 +51,7 @@ public class GameStatistics : MonoBehaviour
         if (earnedMoney) print("Earned money: " + _earnedMoney);
         if (gamesCount) print("Games Count: " + _gamesCount);
 
-        if (!Skyscraper.Instance.HasCheatActiveOnce && _timer >= 15f && sendToAppMetrica)
+        if (_timer >= 15f && sendToAppMetrica)
         {
             // TODO: Send analytics
         }

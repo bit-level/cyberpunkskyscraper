@@ -52,8 +52,6 @@ public class Skyscraper : MonoBehaviour
     private Vector3 moveDirection = Vector3.forward;
     private Vector3 spawnPosition;
     private float time;
-    private bool cheat;
-    private bool hasCheatActiveOnce;
     private Dictionary<FloorColorSet, Material[]> materialSets;
     private Dictionary<FloorColorSet, ParticleSystem> smokeSet;
     private float currentFloorMoovingSpeed;
@@ -68,8 +66,6 @@ public class Skyscraper : MonoBehaviour
 
     public int FloorsCount { get; private set; } = 0;
     public State CurrentState { get; private set; }
-    public bool Cheat => cheat;
-    public bool HasCheatActiveOnce => hasCheatActiveOnce;
     public float PerfectDistanceDefault { get; private set; }
     public int FirstFloorScaleIndex
     {
@@ -155,14 +151,6 @@ public class Skyscraper : MonoBehaviour
     {
         UpdateCurrentFloorPosition();
         time += Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            // Cheat click
-            MakeCurrentPositionCorrect();
-            ProcessTap();
-            hasCheatActiveOnce = true;
-        }
     }
 
     private void BuiltAction()
@@ -403,16 +391,7 @@ public class Skyscraper : MonoBehaviour
         }
 
         if (CurrentState != State.UnderBuild) return;
-        if (cheat) MakeCurrentPositionCorrect();
         ProcessTap();
-    }
-
-    public void SwitchCheatState(UnityEngine.UI.Graphic graphic)
-    {
-        cheat = !cheat;
-        if (graphic != null)
-            graphic.color = (cheat) ? Color.green : Color.red;
-        hasCheatActiveOnce = true;
     }
 
     public void SetCurrentState(State state)
