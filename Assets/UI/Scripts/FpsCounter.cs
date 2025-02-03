@@ -28,13 +28,8 @@ public class FpsCounter : MyText
     private void OnApplicationQuit()
     {
         if (_timer < 30f) return;
-
         float averageFps = (float)_totalFramesCount / _timer;
-        AppMetrica.Instance.ReportEvent("Application Quit", new System.Collections.Generic.Dictionary<string, object>()
-        {
-            { "Average FPS", averageFps }
-        });
-        AppMetrica.Instance.SendEventsBuffer();
+        Debug.Log("Average FPS: " + averageFps);
     }
 #endif
 }
