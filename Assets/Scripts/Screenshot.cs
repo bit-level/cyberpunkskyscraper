@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.IO;
 
@@ -21,3 +22,4 @@ public class ScreenshotTool : EditorWindow
         Debug.Log($"Screenshot saved to: {fullPath}");
     }
 }
+#endif
