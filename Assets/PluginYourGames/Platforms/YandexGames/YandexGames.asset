@@ -16,8 +16,8 @@ MonoBehaviour:
   projectSettings:
     selectWebGLTemplate: 0
     runInBackground: 0
-    enableExceptions: 3
-    compressionFormat: 2
+    enableExceptions: 2
+    compressionFormat: 0
     decompressionFallback: 0
     autoGraphicsAPI: 1
     minimalCodeCompression: 1
