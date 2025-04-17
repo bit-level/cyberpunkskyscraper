@@ -216,12 +216,7 @@ public class Skyscraper : MonoBehaviour
     {
         if (canvas != null)
         {
-            Vector2 touchPosition;
-#if UNITY_EDITOR
-            touchPosition = Input.mousePosition;
-#else
-			touchPosition = Input.touches[0].position;
-#endif
+            Vector2 touchPosition = Input.mousePosition;
             touchPosition.x -= Screen.width / 2f;
             touchPosition.y -= Screen.height / 2f;
 

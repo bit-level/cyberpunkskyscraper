@@ -1,17 +1,25 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
+using UnityEditor;
+using System.IO;
 
-public class Screenshot : MonoBehaviour
+public class ScreenshotTool : EditorWindow
 {
-#if UNITY_EDITOR
-    private static int count = 0;
-    private void Update()
+    [MenuItem("Tools/Screenshot")]
+    private static void TakeScreenshot()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        string folderPath = "Screenshots";
+        if (!Directory.Exists(folderPath))
         {
-            string name = string.Format("Screenshot_{0}.png", count++);
-            ScreenCapture.CaptureScreenshot(name);
-            print("Screenshot saved: " + name);
+            Directory.CreateDirectory(folderPath);
         }
+
+        string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        string fileName = $"Screenshot_{timestamp}.png";
+        string fullPath = Path.Combine(folderPath, fileName);
+
+        ScreenCapture.CaptureScreenshot(fullPath);
+        Debug.Log($"Screenshot saved to: {fullPath}");
     }
-#endif
 }
+#endif
