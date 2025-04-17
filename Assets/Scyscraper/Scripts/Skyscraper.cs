@@ -15,6 +15,7 @@ public class Skyscraper : MonoBehaviour
     [SerializeField] Transform canvas;
     [SerializeField] Transform perfectPrefab;
     [SerializeField] float[] firstFloorScales;
+    [SerializeField] bool enableCheat;
 
     [Header("Particle System")]
     [SerializeField] ParticleSystem blueSmoke;
@@ -156,7 +157,7 @@ public class Skyscraper : MonoBehaviour
         UpdateCurrentFloorPosition();
         time += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (enableCheat && Input.GetKeyDown(KeyCode.Return))
         {
             // Cheat click
             MakeCurrentPositionCorrect();
