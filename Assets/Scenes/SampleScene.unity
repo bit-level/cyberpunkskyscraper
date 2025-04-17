@@ -407,6 +407,7 @@ MonoBehaviour:
   - 5
   - 6
   - 7
+  enableCheat: 1
   blueSmoke: {fileID: 451108218164274408, guid: 921dbd04d1dcdab47a667d51543b766b, type: 3}
   pinkSmoke: {fileID: 451108218164274408, guid: 82f4d374d6c50fd4b87adf6020b6ba40, type: 3}
   redSmoke: {fileID: 451108218164274408, guid: ad68ec4a38fbdc34180f8d68a7776f31, type: 3}
@@ -30656,7 +30657,6 @@ GameObject:
   - component: {fileID: 1687258584}
   - component: {fileID: 1687258582}
   - component: {fileID: 1687258587}
-  - component: {fileID: 1687258589}
   - component: {fileID: 1687258588}
   - component: {fileID: 1687258590}
   - component: {fileID: 1687258591}
@@ -30814,18 +30814,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1687258589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687258581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 917c4a79a5b13ec4b9e1caae76136416, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1687258590
 MonoBehaviour:
   m_ObjectHideFlags: 0
