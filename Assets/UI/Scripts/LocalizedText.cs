@@ -2,12 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Text))]
 public class LocalizedText : MonoBehaviour
 {
     [SerializeField] private List<Language> languages;
     [SerializeField] private List<string> texts;
-
     [SerializeField] private Text text;
 
     private void Start()
@@ -25,10 +23,5 @@ public class LocalizedText : MonoBehaviour
                 break;
             }
         }
-    }
-
-    private void OnValidate()
-    {
-        text = GetComponent<Text>();
     }
 }
