@@ -2,16 +2,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlowMotion : Buyable
+public class SlowMotion : MonoBehaviour
 {
-#pragma warning disable 0649
     [SerializeField] Image buttonImage;
     [SerializeField] Image progressBar;
-    [SerializeField] Text cost;
-    [SerializeField] Text watchAd;
+    [SerializeField] GameObject adIcon;
     [SerializeField] float activeTime = 5f;
     [SerializeField] float timeScale = .5f;
-#pragma warning restore 0649
+    [SerializeField] Button button;
 
     private bool _state = false;
 
@@ -22,16 +20,15 @@ public class SlowMotion : Buyable
     public bool IsShowed { get; private set; }
     public static SlowMotion Instance { get; private set; }
 
-    #region MonoBehaviour Callbacks
-
     private void Awake()
     {
         Instance = this;
 
         buttonImage.color = HIDEN;
         progressBar.color = HIDEN;
-        cost.color = HIDEN;
-        watchAd.color = HIDEN;
+        adIcon.SetActive(false);
+
+        button.onClick.AddListener(OnButtonClicked);
     }
 
     private void Start()
@@ -52,9 +49,6 @@ public class SlowMotion : Buyable
             Time.timeScale = 1f;
         }
     }
-    #endregion
-
-    #region Public Functions
 
     public void Activate()
     {
@@ -63,10 +57,9 @@ public class SlowMotion : Buyable
         al.Add(() =>
         {
             Time.timeScale = timeScale;
-            GetComponent<Button>().interactable = false;
+            button.interactable = false;
             LaunchProgressBar(activeTime);
-            StartCoroutine(Utils.ChangeGraphicColor(cost, HIDEN, .5f));
-            StartCoroutine(Utils.ChangeGraphicColor(watchAd, HIDEN, .5f));
+            adIcon.SetActive(false);
             Skyscraper.Instance.perfectDistance = .2f;
         }, .3f);
 
@@ -78,10 +71,9 @@ public class SlowMotion : Buyable
         al.Add(() =>
         {
             Time.timeScale = 1f;
-            GetComponent<Button>().interactable = true;
+            button.interactable = true;
             StartCoroutine(Utils.ChangeGraphicColor(buttonImage, ACTIVE, .5f));
-            StartCoroutine(Utils.ChangeGraphicColor(cost, ACTIVE, .5f));
-            StartCoroutine(Utils.ChangeGraphicColor(watchAd, ACTIVE, .5f));
+            adIcon.SetActive(true);
             Skyscraper.Instance.perfectDistance = Skyscraper.Instance.PerfectDistanceDefault;
         });
 
@@ -91,10 +83,9 @@ public class SlowMotion : Buyable
     public void Show()
     {
         _state = true;
-        GetComponent<Button>().interactable = true;
+        button.interactable = true;
         StartCoroutine(Utils.ChangeGraphicColor(buttonImage, ACTIVE, .5f));
-        StartCoroutine(Utils.ChangeGraphicColor(cost, ACTIVE, .5f));
-        StartCoroutine(Utils.ChangeGraphicColor(watchAd, ACTIVE, .5f));
+        adIcon.SetActive(true);
 
         IsShowed = true;
     }
@@ -102,31 +93,19 @@ public class SlowMotion : Buyable
     public void Hide()
     {
         _state = false;
-        GetComponent<Button>().interactable = false;
+        button.interactable = false;
         StartCoroutine(Utils.ChangeGraphicColor(buttonImage, HIDEN, .5f));
         StartCoroutine(Utils.ChangeGraphicColor(progressBar, HIDEN, .5f));
-        StartCoroutine(Utils.ChangeGraphicColor(cost, HIDEN, .5f));
-        StartCoroutine(Utils.ChangeGraphicColor(watchAd, HIDEN, .5f));
+        adIcon.SetActive(false);
 
         IsShowed = false;
     }
-    #endregion
-
-    #region Private Functions
 
     private void LaunchProgressBar(float activeTime)
     {
         StartCoroutine(ProgressBarSetActive(true));
         StartCoroutine(ProgressBarStartCounting(activeTime));
     }
-
-    public override void OnBuy()
-    {
-        Activate();
-    }
-    #endregion
-
-    #region Coroutines
 
     private IEnumerator ProgressBarSetActive(bool active)
     {
@@ -174,5 +153,9 @@ public class SlowMotion : Buyable
 
         progressBar.fillAmount = 0f;
     }
-    #endregion
+
+    private void OnButtonClicked()
+    {
+        Ad.Instance.ShowRewarded("slow-motion", Activate);
+    }
 }
