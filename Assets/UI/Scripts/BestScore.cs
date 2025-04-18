@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class BestScore : MyText
 {
     [SerializeField] new ParticleSystem particleSystem = null;
+    [SerializeField] Text value;
 
     private Text label;
     private const string PREFSKEY = "best_score";
@@ -23,12 +24,12 @@ public class BestScore : MyText
         if (PlayerPrefs.HasKey(PREFSKEY))
         {
             Value = PlayerPrefs.GetInt(PREFSKEY);
-            label.text = string.Format("Best Score: {0}", Value.ToString());
+            value.text = Value.ToString();
         }
         else
         {
             Value = 0;
-            label.text = "Best Score: 0";
+            value.text = "0";
         }
     }
 
@@ -48,7 +49,7 @@ public class BestScore : MyText
     {
         Value = Score.Instance.Value;
         PlayerPrefs.SetInt(PREFSKEY, Value);
-        label.text = string.Format("Best Score: {0}", Value.ToString());
+        value.text = Value.ToString();
 
         label.color = Color.green;
         particleSystem.Play();
