@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameConfig gameConfig;
     [SerializeField] private RateUs rateUs;
 
-    private int _adShowsCount = 0;
-
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -20,13 +18,7 @@ public class GameManager : MonoBehaviour
         Skyscraper.Instance.OnGameOver += (score, bestScore) =>
         {
             bool showRateUs = score >= 40 && !rateUs.DoNotShowAgain && !rateUs.ShowLater && !gameConfig.DisableRateUsPrompt;
-
             if (showRateUs) rateUs.Show();
-            else if (score >= 10 && !bestScore)
-            {
-                if (_adShowsCount++ % 3 != 0)
-                    Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
-            }
         };
     }
 

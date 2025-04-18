@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using YG;
 
 public class Ad : MonoBehaviour
 {
@@ -41,6 +42,6 @@ public class Ad : MonoBehaviour
 
     public void ShowRewarded(string id, Action callback = null)
     {
-        callback?.Invoke(); // Replace with actual ad show
+        YG2.RewardedAdvShow(id, callback);
     }
 }

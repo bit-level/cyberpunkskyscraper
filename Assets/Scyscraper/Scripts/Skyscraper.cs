@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using YG;
 
 public class Skyscraper : MonoBehaviour
 {
@@ -174,6 +175,7 @@ public class Skyscraper : MonoBehaviour
         {
             ClearData();
             CurrentState = State.ReadyToBuild;
+            YG2.InterstitialAdvShow();
         }
     }
 
