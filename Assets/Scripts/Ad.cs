@@ -38,4 +38,9 @@ public class Ad : MonoBehaviour
         if (isReady) Show(type);
         return isReady;
     }
+
+    public void ShowRewarded(string id, Action callback = null)
+    {
+        callback?.Invoke(); // Replace with actual ad show
+    }
 }
