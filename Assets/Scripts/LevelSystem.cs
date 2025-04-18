@@ -1,16 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
 public class LevelSystem : MonoBehaviour
 {
-#pragma warning disable 0649
     [Range(0f, 1f)]
     [SerializeField] float progress;
     [SerializeField] Image fill;
     [SerializeField] Image[] marks;
     [SerializeField] Text[] labels;
-    [SerializeField] string[] ranks;
+    [SerializeField] GameObject[] ranks;
     [SerializeField] string[] limits;
     [SerializeField] RectTransform currentPositionMark;
     [Range(0f, 1f)]
@@ -19,13 +17,10 @@ public class LevelSystem : MonoBehaviour
     [SerializeField] new ParticleSystem particleSystem;
     [SerializeField] Animation glowAnim;
     [SerializeField] GameObject noAds;
-#pragma warning restore 0649
 
     private readonly Color ACTIVE       = new Color(.078f, .77f, .18f);
     private readonly Color DISACTIVE    = new Color(1f, 1f, 1f);
     public static LevelSystem Instance { get; private set; }
-
-    #region Properties
 
     public float Progress
     {
@@ -38,22 +33,13 @@ public class LevelSystem : MonoBehaviour
         get => currentPosition;
         set { currentPosition = Mathf.Clamp(value, 0f, 1f); }
     }
-    #endregion
-
-    #region Private Fields
 
     private Animation _animation;
     private int _openRanksCount = -1;
     private bool _firstRankChanged = false;
-    #endregion
-
-    #region Events
 
     public delegate void MethodContainer();
     public event MethodContainer OnRankUp;
-    #endregion
-
-    #region MonoBehaviour Callbacks
 
     private void Awake()
     {
@@ -77,16 +63,21 @@ public class LevelSystem : MonoBehaviour
             {
                 if (i < activeCount)
                 {
-                    labels[i].text = ranks[i];
+                    ranks[i].SetActive(true);
+                    labels[i].gameObject.SetActive(false);
                     labels[i].color = Color.white;
                 }
                 else if (i == activeCount)
                 {
+                    ranks[i].SetActive(false);
+                    labels[i].gameObject.SetActive(true);
                     labels[i].text = limits[i];
                     labels[i].color = Color.white * .7f;
                 }
                 else
                 {
+                    ranks[i].SetActive(false);
+                    labels[i].gameObject.SetActive(true);
                     labels[i].text = "???";
                     labels[i].color = Color.white;
                 }
@@ -106,9 +97,6 @@ public class LevelSystem : MonoBehaviour
             NewRank(_openRanksCount);
         }
     }
-    #endregion
-
-    #region Private Functions
 
     private void NewRank(int newRank)
     {
@@ -134,5 +122,4 @@ public class LevelSystem : MonoBehaviour
         particleSystem.Play();
         glowAnim.Play("Glow");
     }
-    #endregion
 }
