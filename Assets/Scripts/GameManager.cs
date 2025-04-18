@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         SceneManager.LoadScene(0);
+        Saver.Instance.Save();
     }
 
     public void DeleteProgress()
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour
         foreach (string key in keys)
             PlayerPrefs.DeleteKey(key);    
 
+        Saver.Instance.Save();
         SceneManager.LoadScene(0);
     }
 }

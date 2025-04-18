@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 namespace PlayerPrefsVariables
 {
@@ -26,6 +27,7 @@ namespace PlayerPrefsVariables
         public override void SetValue(bool value)
         {
             PlayerPrefs.SetInt(key, value ? 1 : 0);
+            Saver.Instance.Save();
         }
 
         public override bool GetValue() => PlayerPrefs.GetInt(key) == 1;
@@ -38,6 +40,7 @@ namespace PlayerPrefsVariables
         public override void SetValue(DateTime value)
         {
             PlayerPrefs.SetString(key, value.ToString());
+            Saver.Instance.Save();
         }
 
         public override DateTime GetValue() => DateTime.Parse(PlayerPrefs.GetString(key));

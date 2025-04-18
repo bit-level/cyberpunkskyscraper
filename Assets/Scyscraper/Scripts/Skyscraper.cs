@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using YG;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class Skyscraper : MonoBehaviour
 {
@@ -421,6 +422,7 @@ public class Skyscraper : MonoBehaviour
     public void FirstFloorSizeLevelUp()
     {
         PlayerPrefs.SetInt(FIRST_FLOOR_SCALE_PREFS_KEY, ++FirstFloorScaleIndex);
+        Saver.Instance.Save();
     }
 #endregion
 }
