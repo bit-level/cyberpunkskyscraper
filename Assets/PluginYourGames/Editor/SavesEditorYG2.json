@@ -12,14 +12,16 @@
     "wallet",
     "RateUs::DoNotShowAgain",
     "RateUs::ShowLater",
-    "best_score"
+    "best_score",
+    "FloorSizeLevelUp::Hint"
   ],
   "intValues": [
     0,
-    100,
+    199500,
     0,
     0,
-    5
+    46,
+    1
   ],
   "intExample": 5,
   "strExample": "Hello!",
@@ -29,5 +31,5 @@
     false,
     false
   ],
-  "idSave": 5
+  "idSave": 11
 }

@@ -8,9 +8,9 @@ public class LocalizedText : MonoBehaviour
     [SerializeField] private List<string> texts;
     [SerializeField] private Text text;
 
-    private void Start()
+    private void Awake()
     {
-        LocalizationManager.Instance.Register(this);
+        LocalizationManager.Register(this);
     }
 
     public void SetLanguage(Language language)

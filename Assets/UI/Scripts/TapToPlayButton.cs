@@ -1,4 +1,5 @@
 ﻿using UnityEngine.UI;
+using YG;
 
 public class TapToPlayButton : MyText
 {
@@ -25,7 +26,7 @@ public class TapToPlayButton : MyText
 
     public void ShowRestart()
     {
-        label.text = "Restart";
+        label.text = YG2.lang == "en" ? "Restart" : "Заново";
         base.Show();
     }
 }
