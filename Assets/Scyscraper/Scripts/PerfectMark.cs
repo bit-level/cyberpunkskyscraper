@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+using YG;
 
 public class PerfectMark : MonoBehaviour
 {
-#pragma warning disable 0649
     [SerializeField] float stayTime = 1f;
-#pragma warning restore 0649
+    [SerializeField] Text text;
 
     private Animation _animation;
     private bool hiding = false;
@@ -14,6 +15,7 @@ public class PerfectMark : MonoBehaviour
     {
         _animation = GetComponent<Animation>();
         _animation.Play("Show");
+        text.text = YG2.lang == "ru" ? "Идеально!" : "Perfect!";
     }
 
     private void Update()

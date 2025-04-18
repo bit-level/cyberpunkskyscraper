@@ -1,4 +1,5 @@
 using UnityEngine;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 namespace CyberpunkSkyscraper
 {
@@ -58,6 +59,7 @@ namespace CyberpunkSkyscraper
             {
                 ShowHint();
                 PlayerPrefs.SetInt(HINT_PREFS_KEY, 1);
+                Saver.Instance.Save();
             }
         }
 

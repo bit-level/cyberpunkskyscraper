@@ -1,4 +1,5 @@
 using UnityEngine;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class NoAds : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class NoAds : MonoBehaviour
     {
         if (Instance == null) return;
         PlayerPrefs.SetInt(PREFS_KEY, 1);
+        Saver.Instance.Save();
         Ad.Instance.Block[Ad.Type.Display] = true;
         Ad.Instance.Block[Ad.Type.Interstitial] = true;
         Destroy(Instance.gameObject);

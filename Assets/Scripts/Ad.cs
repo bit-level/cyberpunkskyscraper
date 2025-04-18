@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using YG;
 
 public class Ad : MonoBehaviour
 {
@@ -37,5 +38,10 @@ public class Ad : MonoBehaviour
         bool isReady = IsReady(type);
         if (isReady) Show(type);
         return isReady;
+    }
+
+    public void ShowRewarded(string id, Action callback = null)
+    {
+        YG2.RewardedAdvShow(id, callback);
     }
 }

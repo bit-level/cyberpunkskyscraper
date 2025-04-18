@@ -1,4 +1,4 @@
-using UnityEngine;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class TotalMoney : Money
 {
@@ -60,6 +60,7 @@ public class TotalMoney : Money
     private void Save()
     {
         PlayerPrefs.SetInt(PREFSKEY, amount);
+        Saver.Instance.Save();
     }
     #endregion
 }

@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameFull: YandexGamesPlatform
   projectSettings:
+    showFirstAdv: 1
+    interAdvInterval: 60
+    postponeCallByFail: 0
+    skipInterAdvAfterReward: 0
     selectWebGLTemplate: 0
     runInBackground: 0
     enableExceptions: 2

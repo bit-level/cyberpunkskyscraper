@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameConfig gameConfig;
     [SerializeField] private RateUs rateUs;
-
-    private int _adShowsCount = 0;
 
     private void Awake()
     {
@@ -20,13 +19,7 @@ public class GameManager : MonoBehaviour
         Skyscraper.Instance.OnGameOver += (score, bestScore) =>
         {
             bool showRateUs = score >= 40 && !rateUs.DoNotShowAgain && !rateUs.ShowLater && !gameConfig.DisableRateUsPrompt;
-
             if (showRateUs) rateUs.Show();
-            else if (score >= 10 && !bestScore)
-            {
-                if (_adShowsCount++ % 3 != 0)
-                    Ad.Instance.ShowIfReady(Ad.Type.Interstitial);
-            }
         };
     }
 
@@ -34,6 +27,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         SceneManager.LoadScene(0);
+        Saver.Instance.Save();
     }
 
     public void DeleteProgress()
@@ -47,6 +41,7 @@ public class GameManager : MonoBehaviour
         foreach (string key in keys)
             PlayerPrefs.DeleteKey(key);    
 
+        Saver.Instance.Save();
         SceneManager.LoadScene(0);
     }
 }
