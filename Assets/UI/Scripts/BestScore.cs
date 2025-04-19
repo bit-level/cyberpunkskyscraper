@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using YG;
 using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class BestScore : MyText
@@ -51,6 +52,7 @@ public class BestScore : MyText
         Value = Score.Instance.Value;
         PlayerPrefs.SetInt(PREFSKEY, Value);
         value.text = Value.ToString();
+        YG2.SetLeaderboard("leaderboard", Value);
 
         label.color = Color.green;
         particleSystem.Play();
