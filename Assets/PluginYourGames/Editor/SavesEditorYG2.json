@@ -1,35 +1,37 @@
 {
-  "stringKeys": [
-    "RateUs::ShowLaterReset"
-  ],
-  "stringValues": [
-    "4/18/2025 3:39:44 PM"
-  ],
-  "floatKeys": [],
-  "floatValues": [],
-  "intKeys": [
-    "FirstFloorScaleIndex",
-    "wallet",
-    "RateUs::DoNotShowAgain",
-    "RateUs::ShowLater",
-    "best_score",
-    "FloorSizeLevelUp::Hint"
-  ],
-  "intValues": [
-    0,
-    199500,
-    0,
-    0,
-    46,
-    1
-  ],
-  "intExample": 5,
-  "strExample": "Hello!",
-  "boolExample": [
-    false,
-    false,
-    false,
-    false
-  ],
-  "idSave": 11
+    "stringKeys": [
+        "RateUs::ShowLaterReset"
+    ],
+    "stringValues": [
+        "4/18/2025 3:39:44 PM"
+    ],
+    "floatKeys": [],
+    "floatValues": [],
+    "intKeys": [
+        "FirstFloorScaleIndex",
+        "wallet",
+        "RateUs::DoNotShowAgain",
+        "RateUs::ShowLater",
+        "best_score",
+        "FloorSizeLevelUp::Hint",
+        "session_index"
+    ],
+    "intValues": [
+        0,
+        275000,
+        0,
+        0,
+        46,
+        1,
+        0
+    ],
+    "intExample": 5,
+    "strExample": "Hello!",
+    "boolExample": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "idSave": 12
 }
