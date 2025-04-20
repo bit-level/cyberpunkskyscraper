@@ -52,7 +52,6 @@ public class BestScore : MyText
         Value = Score.Instance.Value;
         PlayerPrefs.SetInt(PREFSKEY, Value);
         value.text = Value.ToString();
-        YG2.SetLeaderboard("leaderboard", Value);
 
         label.color = Color.green;
         particleSystem.Play();
