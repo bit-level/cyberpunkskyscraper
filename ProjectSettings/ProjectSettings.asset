@@ -40,7 +40,7 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos:
-  - logo: {fileID: 10404, guid: 0000000000000000f000000000000000, type: 0}
+  - logo: {fileID: 0}
     duration: 2
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
@@ -654,7 +654,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    WebGL: PLUGIN_YG_2;RU_YG2;RewardedAdv_yg;InterstitialAdv_yg;Authorization_yg;Storage_yg;RedefinePlayerPrefs_yg;Localization_yg;YandexGamesPlatform_yg;TMP_YG2
+    WebGL: PLUGIN_YG_2;RU_YG2;RewardedAdv_yg;InterstitialAdv_yg;Authorization_yg;Storage_yg;RedefinePlayerPrefs_yg;Localization_yg;TMP_YG2;Leaderboards_yg;YandexGamesPlatform_yg
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
