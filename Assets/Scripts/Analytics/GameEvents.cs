@@ -16,6 +16,7 @@ namespace BitLevel.Core.Analytics
         public const string KEY_DROP_NAME = "drop_name";
         public const string KEY_PLACEMENT = "placement";
         public const string KEY_TIME = "time";
+        public const string KEY_LEVEL = "level";
 
         public const string EVENT_GAME_LAUNCHED = "game_launched";
         public const string EVENT_NEW_GAME = "new_game";
@@ -29,6 +30,7 @@ namespace BitLevel.Core.Analytics
         public const string BOOSTER_TUTORIAL_COMPLETE = "booster_tutorial_complete";
         public const string INTERSTITIAL_SHOWN = "interstitial_shown";
         public const string INTERSTITIAL_CLOSED = "interstitial_closed";
+        public const string UPGRADE_BOUGHT = "upgrade_bought";
 
         private static string saveId;
         private static int sessionIndex;
@@ -111,6 +113,12 @@ namespace BitLevel.Core.Analytics
         {
             for (int i = 0; i < senders.Count; i++)
                 senders[i].InterstitialClosed(saveId, sessionIndex, GetPlaytime(), placement, time, tags);
+        }
+
+        public static void UpgradeBought(int level)
+        {
+            for (int i = 0; i < senders.Count; i++)
+                senders[i].UpgradeBought(saveId, sessionIndex, GetPlaytime(), level, tags);
         }
 
         public static int GetPlaytime() => Mathf.FloorToInt(Playtime.Instance.Get());

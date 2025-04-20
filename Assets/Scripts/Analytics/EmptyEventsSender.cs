@@ -34,5 +34,8 @@ namespace BitLevel.Core.Analytics
 
         public void InterstitialClosed(string saveId, int sessionIndex, int playtime, string placement, int time, string[] tags = null)
         {}
+
+        public void UpgradeBought(string saveId, int sessionIndex, int playtime, int level, string[] tags = null)
+        {}
     }
 }
