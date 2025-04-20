@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using BitLevel.Core.Analytics;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using PlayerPrefs = RedefineYG.PlayerPrefs;
 
@@ -16,10 +19,17 @@ public class GameManager : MonoBehaviour
     {
         rateUs.Initialize();
 
+        string saveId = PlayerPrefs.HasKey("id") ? PlayerPrefs.GetString("id") : Guid.NewGuid().ToString();
+        int sessionIndex = PlayerPrefs.HasKey("session_index") ? PlayerPrefs.GetInt("session_index") : -1;
+        PlayerPrefs.SetInt("session_index", ++sessionIndex);
+        GameEvents.Init(saveId, sessionIndex, new List<IEventsSender>() { new DebugEventsSender() });
+        GameEvents.GameLaunched();
+
         Skyscraper.Instance.OnGameOver += (score, bestScore) =>
         {
             bool showRateUs = score >= 40 && !rateUs.DoNotShowAgain && !rateUs.ShowLater && !gameConfig.DisableRateUsPrompt;
             if (showRateUs) rateUs.Show();
+            GameEvents.GameFailed(score);
         };
     }
 
