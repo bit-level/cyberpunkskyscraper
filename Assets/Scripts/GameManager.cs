@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
         string saveId = PlayerPrefs.HasKey("id") ? PlayerPrefs.GetString("id") : Guid.NewGuid().ToString();
         int sessionIndex = PlayerPrefs.HasKey("session_index") ? PlayerPrefs.GetInt("session_index") : -1;
+        PlayerPrefs.SetString("id", saveId);
         PlayerPrefs.SetInt("session_index", ++sessionIndex);
         Saver.Instance.Save();
         GameEvents.Init(saveId, sessionIndex, new List<IEventsSender>() { new DebugEventsSender() });
