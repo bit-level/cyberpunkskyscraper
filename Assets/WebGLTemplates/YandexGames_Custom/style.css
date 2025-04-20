@@ -24,7 +24,7 @@ body {
     position: fixed;
     display: flex;
     justify-content: center;
-    background: url('bg.jpg') no-repeat center;
+    background: url('Images/background.jpg') no-repeat center;
     background-size: cover;
     background-color: rgba(0, 0, 0, 0.3);
 }
