@@ -165,6 +165,21 @@ namespace BitLevel.Core.Analytics
             Send(dict.ToJson());
         }
 
+        public void UpgradeBought(string saveId, int sessionIndex, int playtime, int level, string[] tags = null)
+        {
+            var dict = new JsonDictionary()
+                .Add(GameEvents.KEY_SAVE_ID, saveId)
+                .Add(GameEvents.KEY_SESSION_INDEX, sessionIndex)
+                .Add(GameEvents.KEY_PLAYTIME, playtime)
+                .Add(GameEvents.KEY_EVENT_TYPE, GameEvents.UPGRADE_BOUGHT)
+                .Add(GameEvents.KEY_LEVEL, level);
+
+            if (tags != null)
+                dict.Add(GameEvents.KEY_TAGS, tags);
+
+            Send(dict.ToJson());
+        }
+
         private void Send(string json)
         {
             string url = "https://animals-farm.bit-level.com/api/merge-animals/new-event";

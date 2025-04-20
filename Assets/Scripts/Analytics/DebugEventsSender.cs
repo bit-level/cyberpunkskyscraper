@@ -79,6 +79,14 @@ namespace BitLevel.Core.Analytics
             });
         }
 
+        public void UpgradeBought(string saveId, int sessionIndex, int playtime, int level, string[] tags = null)
+        {
+            Send(saveId, sessionIndex, playtime, GameEvents.UPGRADE_BOUGHT, tags, new Dictionary<string, object>
+            {
+                { GameEvents.KEY_LEVEL, level }
+            });
+        }
+
         private void Send(string userId, int sessionIndex, int playtime, string eventType, string[] tags = null, Dictionary<string, object> extras = null)
         {
             stringBuilder.Append(string.Format("{0}\t{1}\t{2}\t{3}",

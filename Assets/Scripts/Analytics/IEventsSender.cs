@@ -13,5 +13,6 @@ namespace BitLevel.Core.Analytics
         void BoosterTutorialComplete(string saveId, int sessionIndex, int playtime, string[] tags = null);
         void InterstitialShown(string saveId, int sessionIndex, int playtime, string placement, string[] tags = null);
         void InterstitialClosed(string saveId, int sessionIndex, int playtime, string placement, int time, string[] tags = null);
+        void UpgradeBought(string saveId, int sessionIndex, int playtime, int level, string[] tags = null);
     }
 }

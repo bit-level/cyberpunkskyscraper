@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BitLevel.Core.Analytics;
 using UnityEngine;
 
 public class Skyscraper : MonoBehaviour
@@ -419,6 +420,7 @@ public class Skyscraper : MonoBehaviour
     public void FirstFloorSizeLevelUp()
     {
         PlayerPrefs.SetInt(FIRST_FLOOR_SCALE_PREFS_KEY, ++FirstFloorScaleIndex);
+        GameEvents.UpgradeBought(FirstFloorScaleIndex);
     }
 #endregion
 }
