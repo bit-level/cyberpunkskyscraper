@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("session_index", ++sessionIndex);
         Saver.Instance.Save();
         GameEvents.Init(saveId, sessionIndex, new List<IEventsSender>() { new DebugEventsSender() });
+        GameEvents.AddTags("debug", "editor");
         GameEvents.GameLaunched();
 
         Skyscraper.Instance.OnGameOver += (score, bestScore) =>
