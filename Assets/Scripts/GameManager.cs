@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BitLevel.Core.Analytics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using YG;
 using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class GameManager : MonoBehaviour
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
             bool showRateUs = score >= 40 && !rateUs.DoNotShowAgain && !rateUs.ShowLater && !gameConfig.DisableRateUsPrompt;
             if (showRateUs) rateUs.Show();
             GameEvents.GameFailed(score);
+            if (bestScore)
+                YG2.SetLeaderboard("leaderboard", score);
         };
     }
 
