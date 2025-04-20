@@ -182,7 +182,7 @@ namespace BitLevel.Core.Analytics
 
         private void Send(string json)
         {
-            string url = "https://animals-farm.bit-level.com/api/merge-animals/new-event";
+            string url = "https://animals-farm.bit-level.com/api/cyberpunk-skyscraper/new-event";
             byte[] data = Encoding.UTF8.GetBytes(json);
 
             UnityWebRequest www = new UnityWebRequest(url, "POST");
